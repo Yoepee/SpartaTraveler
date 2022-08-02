@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>로그인</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Gugi&family=Hi+Melody&family=Square+Peg&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Gugi&family=Hi+Melody&family=Nanum+Pen+Script&family=Square+Peg&display=swap" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://kit.fontawesome.com/d48a88bd01.js" crossorigin="anonymous"></script>
+
+
+    <style>
+        body {
+
+            height: 100vh;
+            background-image: url('https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/deQA/image/MUA5VDq-wd9_L7NBmrXC5aAyCd4.jpg');
+            background-size: cover;
+        }
+        #title {
+            font-family: 'Gowun Dodum', sans-serif;
+            font-family: 'Gugi', cursive;
+            font-family: 'Hi Melody', cursive;
+            font-family: 'Square Peg', cursive;
+            text-align: center;
+            font-size: 150px;
+        }
+        #subtitle {
+            font-size:50px;
+            text-align: center;
+            font-family: 'Nanum Pen Script', cursive;
+        }
+
+
+
+        .button.login_btn {
+            background-color: #AAB9FF;
+            border-color: transparent;
+            color: #46649B !important;
+
+        }
+
+        .button.signup_btn {
+            background-color: transparent;
+            border-color: #AAB9FF;
+            color: #46649B !important;
+        }
+    </style>
+
+
+
+    <script>
+        //회원가입 페이지로이동
+        function to_sign_up() {
+            window.location.href("/signup")
+        }
+
+        //로그인
+        function click_sign_in() {
+            let username = $("#input-username").val()
+            let password = $("#input-password").val()
+
+            if (username == "") {
+                $("#help-id-login").text("이메일을 입력해주세요.")
+                $("#input-username").focus()
+                return;
+            } else {
+                $("#help-id-login").text("")
+            }
+
+            if (password == "") {
+                $("#help-password-login").text("비밀번호를 입력해주세요.")
+                $("#input-password").focus()
+                return;
+            } else {
+                $("#help-password-login").text("")
+            }
+            $.ajax({
+                type: "POST",
+                url: "/sign_in",
+                data: {
+                    username_give: username,
+                    password_give: password
+                },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        // 추후 메인페이지 개발시 해당페이지로 이동할때 사용함
+                        // path경로를 설정하면 설정한 경로 하위경로에만 쿠키가 전달됨
+                        $.cookie('mytoken', response['token'], {path: '/'});
+                        
+                        // 화면이동구문 replace사용시 새로운창으로 만드므로 뒤로가기가 불가능하다. 로그인화면으로 돌아갈 필요가 없으므로 사용
+                        window.location.replace("/")
+                    } else {
+                        alert(response['msg'])
+                    }
+                }
+            });
+        }
+    </script>
+
+</head>
+
+
+
+
+
+
+
+<body>
+<div id="title"><b>SpartaTravler</b></div>
+<div id="subtitle">알리고 싶은 우리들의 여행</div>
+
+<section class="section">
+    <div class="container" id="input-box">
+        <div class="box" style="max-width: 480px;margin:auto">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <label class="label">Email</label>
+                        <div class="field has-addons">
+                            <div class="control has-icons-left" style="width:100%">
+                                <input id="input-username" class="input" type="text" placeholder="이메일">
+                                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
+                            </div>
+
+                        </div>
+                        <p id="help-id-login" class="help is-danger"></p>
+                        <label class="label">Password</label>
+                        <div class="field">
+                            <div class="control has-icons-left">
+                                <input id="input-password" class="input" type="password" placeholder="비밀번호">
+                                <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                            </div>
+                            <p id="help-password-login" class="help is-danger"></p>
+                        </div>
+
+
+                    </div>
+                    <div id="div-sign-in-or-up" class="has-text-centered">
+                        <nav class="level is-mobile">
+                            <button class="level-item button login_btn" onclick="click_sign_in()">
+                                로그인
+                            </button>
+
+                        </nav>
+                        <hr>
+                        <h4 class="mb-3" style="color: #46649B">아직 회원이 아니신가요?</h4>
+                        <nav class="level is-mobile">
+
+                            <button class="level-item button signup_btn"
+                                    onclick="location.href='signup'">
+                                회원가입하기
+                            </button>
+                        </nav>
+                    </div>
+
+
+
+
+
+
+                </div>
+            </article>
+        </div>
+
+    </div>
+</section>
+</body>
+
+
+</html>
