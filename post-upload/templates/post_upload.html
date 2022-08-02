@@ -34,8 +34,9 @@
             font-family: 'Jua', sans-serif;
         }
 
+        /* ---사진과 장소 입력폼 사이 거리 간격 추가--- */
         .custom-file{
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         /* ---별점 css--- */
@@ -48,14 +49,16 @@
         }
         #myform label{
             font-size: 3em; /* 이모지 크기 */
-            color: transparent; /* 기존 이모지 컬러 제거 */
+            color: rgba(0,0,0,0); /* 기존 이모지 컬러 제거 */
             text-shadow: 0 0 0 #ffffff; /* 새 이모지 색상 부여 */
         }
         #myform label:hover{
-            text-shadow: 0 0 0 #fffa78; /* 마우스 호버 */
+            color: rgba(0,0,0,1);
+            text-shadow: 0 0 0 #f7f008; /* 마우스 호버 */
         }
         #myform label:hover ~ label{
-            text-shadow: 0 0 0 #fffa78; /* 마우스 호버 뒤에오는 이모지들 */
+            color: rgba(0,0,0,1);
+            text-shadow: 0 0 0 #f7f008; /* 마우스 호버 뒤에오는 이모지들 */
         }
         #myform fieldset{
             display: inline-block; /* 하위 별점 이미지들이 있는 영역만 자리를 차지함.*/
@@ -66,16 +69,29 @@
             text-align: left;
         }
         #myform input[type=radio]:checked ~ label{
-            text-shadow: 0 0 0 #fffa78; /* 마우스 클릭 체크 */
+            color: rgba(0,0,0,1);
+            text-shadow: 0 0 0 #f7f008; /* 마우스 클릭 체크 */
         }
 
-        #map {
-          height: 100%;
+        .posting-box{
+            padding:60px;
+            border:3px solid black;
+            border-radius: 30px;
+            background-color: #ced4da;
+        }
+
+        /* ---구글 지도 css--- */
+        #googleMap {
+            display: none;
+            height: 300px;
+            width: 50%;
         }
     </style>
     <script>
         $(document).ready(function () {
             bsCustomFileInput.init()
+
+
         })
 
         function posting() {
@@ -105,16 +121,56 @@
                 }
             });
         }
+
+        function mapshow(button){
+            var googlemap = document.getElementById('googleMap');
+            console.log(googlemap.style.display);
+              if(googlemap.style.display == 'block') {
+                googlemap.style.display = 'none';
+                $(button).text('지도 보이기');
+              }
+              else {
+                googlemap.style.display = 'block';
+                $(button).text('지도 숨기기');
+              }
+
+        }
+
+
+
     </script>
 </head>
 
 <body>
     <div class="container is-max-desktop ">
-        <div class="notification is-primary">
-            <div class="posting-box">
-                <h2>글 작성하기</h2>
+        <div class="section is-medium is-primary">
+            <div class="posting-box" >
+                <h1 class="title is-1">글 작성하기</h1>
+                <hr style="height:3px; background-color: black;">
+                <div class="section id-small">
+
+                    <p class="title is-2">여행은 즐거우셨나요?</p>
+                    <p class="subtitle is-4">이번 여행에 대해 평점을 매겨주세요</p>
+
+                    <!--  별점 만들기  -->
+                    <div id="myform" >
+                        <div id="stars" style=" width: 370px;margin:auto;display: block;">
+                            <fieldset>
+                                <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
+                                <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
+                                <input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
+                                <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
+                                <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <input type="text" class="form-control" id="title" placeholder="제목">
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="content" rows="10" placeholder="내용 입력"></textarea>
                 </div>
 
                 <div class="custom-file">
@@ -130,10 +186,13 @@
                     <div class="control">
                         <button type="submit" class="button is-info" id="addressbutton">주소 검색</button>
                     </div>
+                    <div class="buttons" style="padding-left:5px">
+                      <button class="button is-info" id="googlemapbutton" onclick="mapshow(this)">지도 보이기</button>
+                    </div>
                 </div>
 
                  <!--  구글지도 만들기  -->
-                <div id="googleMap" style="width: 50%;height: 300px;"></div>
+                <div id="googleMap" ></div>
                 <script>
                 var cityHall;
                     function myMap(){
@@ -176,23 +235,11 @@
                 </script>
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA6mIa4FCbp0S8pua310loupTFqkbGF2I&callback=myMap"></script>
 
-                <!--  별점 만들기  -->
-                <div id="myform">
-                        <fieldset>
-                            <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
-                            <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
-                            <input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
-                            <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
-                            <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
-                        </fieldset>
-                </div>
 
-                <div class="form-group">
-                    <textarea class="form-control" id="content" rows="10" placeholder="내용 입력"></textarea>
-                </div>
+                <div class="section" style="margin-top:">
+                    <button onclick="posting()" type="button" class="button is-large is-fullwidth is-info" style="margin:auto;display: block; ">업로드</button>
 
-                <button onclick="posting()" type="button" class="btn btn-primary">업로드</button>
-                <button onclick="" type="button" class="btn btn-primary">취소</button>
+                </div>
             </div>
         </div>
     </div>
