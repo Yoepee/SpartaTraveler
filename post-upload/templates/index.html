@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <!-- bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -20,7 +23,7 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 
-    <title>스파르타코딩클럽 | 나홀로일기장</title>
+    <title>글 보여주는 페이지</title>
 
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
 
@@ -74,15 +77,42 @@
                         let content = diaries[i]['content']
                         let file = diaries[i]['file']
                         let time = diaries[i]['time']
+                        let scope = '⭐'.repeat(Number(diaries[i]['scope']))
+                        console.log('⭐'*4)
+                        let address = diaries[i]['address']
 
-                        let temp_html = `<div class="card">
-                                            <img src="../static/${file}" class="card-img-top">
-                                            <div class="card-body">
-                                                <h5 class="card-title">${title}</h5>
-                                                <p class="card-text">${content}</p>
-                                                <p class="save-date">${time}</p>
+                        let temp_html = `
+                                        <div class="column is-one-quarter">
+                                            <div class="card">
+                                              <div class="card-image">
+                                                <figure class="image is-4by3">
+                                                  <img src="../static/${file}" alt="Placeholder image">
+                                                </figure>
+                                              </div>
+                                              <div class="card-content">
+                                                <div class="media" style='margin-bottom:12px;'>
+                                                  <div class="media-left">
+                                                    <figure class="image is-48x48">
+                                                      <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                                                    </figure>
+                                                  </div>
+                                                  <div class="media-content">
+                                                    <p class="title is-4">${title}</p>
+                                                    <p class="subtitle is-6">${address}</p>
+                                                  </div>
+                                                  <br>
+
+                                                </div>
+                                                <p class="subtitle is-6">${scope}</p>
+                                                <div class="content">
+                                                  ${content}
+                                                  <br><br>
+                                                  <time datetime="2016-1-1">${time}</time>
+                                                </div>
+                                              </div>
                                             </div>
-                                        </div>`
+                                        </div>
+                                        `
                         $('#cards-box').append(temp_html)
                     }
                 }
@@ -90,12 +120,20 @@
         }
     </script>
 </head>
+    <body>
+        <section class="hero is-info" >
+              <div class="hero-body">
+                    <p class="title">
+                          Sparta Travler
+                    </p>
+              </div>
+        </section>
+        <section class="section is-large">
+            <div class="columns" id="cards-box">
 
-<body>
-<div class="wrap">
-    <div class="card-columns" id="cards-box">
-    </div>
-</div>
-</body>
 
+            </div>
+        </section>
+
+    </body>
 </html>
