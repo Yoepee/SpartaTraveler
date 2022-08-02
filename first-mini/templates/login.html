@@ -27,10 +27,9 @@
     <!--    폰트      -->
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
     <!--  내부 CSS 사용 (static/css)   -->
-    <link rel="stylesheet" type="text/css" href="/static/css/base.css"/>
     <link rel="stylesheet" type="text/css" href="../static/css/login.css">
     <!--    페이지 타이틀     -->
-    <title>취미 사이트</title>
+    <title>Sparta Traveler</title>
     <script>
         //회원가입
         function join_user() {
@@ -38,9 +37,7 @@
             let userid = $('#userid').val();
             let password = $('#password').val();
             let password2 = $('#re_password').val();
-            let username = $('#username').val();
-            let usertel = $('#usertel').val();
-            let usermail = $('#usermail').val();
+
 
             //서버로 값 전달
             $.ajax({
@@ -49,10 +46,7 @@
                 data: {
                     id_give: userid,
                     password_give: password,
-                    password2_give: password2,
-                    name_give: username,
-                    tel_give: usertel,
-                    mail_give: usermail
+                    password2_give: password2
                 },
                 //성공시 서버로부터 메세지 수신 ex)회원가입 성공, 작성하지 않은 정보, 비밀번호 틀림 등
                 success: function (response) {
@@ -106,7 +100,7 @@
             <div class="column is-4 is-offset-4">
                 <div class="box">
                     {% block login %}
-                    <h3 class="title has-text-black">로그인</h3>
+                    <h3 class="title has-text-black">Sparta Traveler</h3>
                     <hr class="login-hr">
 
                     <form>
@@ -131,7 +125,7 @@
 
                     </form>
                     <p class="has-text-grey">
-                        <a href="/join">회원가입</a>
+                        <a href="/join">계정이 없으신가요? 회원가입</a>
                     </p>
                     {% endblock %}
                 </div>

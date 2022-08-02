@@ -21,71 +21,78 @@
     <!--    쿠키를 사용하기 위한 javascript      -->
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <!--    파일 불러오기위한 js    -->
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
     <!--    폰트      -->
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
     <!--  내부 CSS 사용 (static/css)   -->
     <link rel="stylesheet" type="text/css" href="../static/css/base.css"/>
     <!--    페이지 타이틀     -->
-    <title>취미 사이트</title>
+    <title>Sparta Traveler</title>
 
 
     <script>
-        //회원가입
-        function join_user() {
-            //회원가입에 필요한 변수값 저장
-            let userid = $('#userid').val();
-            let password = $('#password').val();
-            let password2 = $('#re_password').val();
-            let username = $('#username').val();
-            let usertel = $('#usertel').val();
-            let usermail = $('#usermail').val();
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+            listing();
+        })
 
-            //서버로 값 전달
+        function listing() {
             $.ajax({
-                type: "POST",
-                url: "/join",
-                data: {
-                    id_give: userid,
-                    password_give: password,
-                    password2_give: password2,
-                    name_give: username,
-                    tel_give: usertel,
-                    mail_give: usermail
-                },
-                //성공시 서버로부터 메세지 수신 ex)회원가입 성공, 작성하지 않은 정보, 비밀번호 틀림 등
+                type: "GET",
+                url: "/write2",
+                data: {},
                 success: function (response) {
-                    alert(response["msg"])
+                    let posts = response['all_posts']
+                    for (i = 0; i < posts.length; i++) {
+                        title = posts[i]['title']
+                        star = posts[i]['star']
+                        star_image = '⭐'.repeat(star)
+                        address = posts[i]['address']
+                        content = posts[i]['content']
+                        picture = posts[i]['file']
+                        date = posts[i]['date']
+
+                        let tmep_html = `<div class="card">
+                                                <img class="card-img-top" src="../static/${picture}" alt="Card image cap">
+                                                <div class="card-body">
+                                                    <p>${star_image}</p>
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="card-text">${content}</p>
+                                                    <p>${address}</p>
+                                                    <p style="color: gray" class="card-text">${date}</p>
+                                                </div>
+                                            </div>`
+                        $('#post').append(tmep_html)
+                    }
                 }
-            });
+            })
         }
 
-        //로그인.js
-        function login_user() {
-            //클라이언트로부터 아이디와 비밀번호 전달
-            let inputid = $('#inputid').val();
-            let inputpw = $('#inputpw').val();
+        function posting() {
+            let title = $('#title').val()
+            let content = $("#content").val()
+            let star = $('#star').val()
+            let address = $('#address').val()
+            let file = $('#file')[0].files[0]
+            let form_data = new FormData()
 
-            //서버로 아이디 비밀번호 전달 후 검사사
+            form_data.append("file_give", file)
+            form_data.append("title_give", title)
+            form_data.append("star_give", star)
+            form_data.append("address_give", address)
+            form_data.append("content_give", content)
+
             $.ajax({
                 type: "POST",
-                url: "/login2",
-                //아이디 비밀번호 전달
-                data: {
-                    inputid_give: inputid,
-                    inputpw_give: inputpw,
-                },
-
+                url: "/write2",
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
                 success: function (response) {
-                    //로그인이 정상적으로 되면, 토큰을 받아옵니다.
-                    //이 토큰을 'mytoken'이라는 키 값으로 쿠기에 저장합니다.
-                    if (response["result"] == 'success') {
-                        $.cookie('mytoken', response['token']);
-                        alert('로그인 완료!')
-                        window.location.href = '/'
-                    } else {
-                        //로그인 실패시 에러메세지 출력ㄹ
-                        alert(response["msg"])
-                    }
+                    alert(response["msg"])
+                    window.location.href="/"
                 }
             });
         }
@@ -98,63 +105,26 @@
     </script>
 </head>
 <body>
-<div class="mypic">
-    <h1>로그인</h1>
-    <button><a href="/">처음으로</a></button>
-</div>
-<div class="mybox">
-    <div class="mybucket">
-        <h1>회원가입</h1>
-        <div class="form-group">
-            <label for="userid">아이디</label>
-            <input type="text" class="form-control" id="userid" placeholder="아이디" name="userid"/>
-        </div>
-        <div class="form-group">
-            <label for="password">비밀번호</label>
-            <input type="password" class="form-control" id="password" placeholder="비밀번호" name="password"/>
-        </div>
-        <div class="form-group">
-            <label for="re_password">비밀번호 확인</label>
-            <input type="password" class="form-control" id="re_password" placeholder="비밀번호 확인" name="re_password"/>
-        </div>
-        <div class="form-group">
-            <label for="usermail">이름</label>
-            <input type="email" class="form-control" id="username" placeholder="이메일" name="email"/>
-        </div>
-        <div class="form-group">
-            <label for="usermail">연락처</label>
-            <input type="email" class="form-control" id="usertel" placeholder="이메일" name="email"/>
-        </div>
-        <div class="form-group">
-            <label for="usermail">이메일</label>
-            <input type="email" class="form-control" id="usermail" placeholder="이메일" name="email"/>
-        </div>
-        <button onclick="logout_user()" type="submit" class="btn btn-primary">로그아웃</button>
+<div class="wrap">
+    <div class="banner" onclick="window.location.href = '/'">
 
     </div>
+    <button onclick="window.location.href = '/write'" type="submit" class="btn btn-primary">글쓰기</button>
+    <button onclick="logout_user()" type="submit" class="btn btn-primary">로그아웃</button>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            {% block write %}
+            <div class="card-columns" id="post">
+
+
+            </div>
+
+            {% endblock %}
+
+        </div>
+    </div>
 </div>
-{% block login %}
-{% endblock %}
-<!--<div class="mybox">-->
-<!--    <div class="mybucket">-->
-
-<!--        <h1>로그인</h1>-->
-<!--        <div class="form-group">-->
-<!--            <label for="userid">아이디</label>-->
-<!--            <input type="text" class="form-control" id="inputid" placeholder="아이디" name="userid"/>-->
-<!--        </div>-->
-
-<!--        <div class="form-group">-->
-<!--            <label for="password">비밀번호</label>-->
-<!--            <input type="password" class="form-control" id="inputpw" placeholder="비밀번호" name="password"/>-->
-<!--        </div>-->
-
-<!--        <button onclick="login_user()" type="submit" class="btn btn-primary">로그인</button>-->
-<!--        <button onclick="logout_user()" type="submit" class="btn btn-primary">로그아웃</button>-->
-<!--    </div>-->
-
 </div>
-<div class="mybox" id="bucket-list">
-</div>
+
 </body>
 </html>

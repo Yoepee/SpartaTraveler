@@ -1,66 +1,75 @@
 /*html과 다르게 <style>생략 바로 내용만 작성*/
 /*폰트*/
 * {
-    font-family: 'Gowun Dodum', sans-serif;
+    font-family: 'Jua', sans-serif;
 }
 
-.mypic {
+.posting-box {
+    width: 500px;
+    margin-top: 20px;
+}
+
+.wrap2 {
+    width: 900px;
+    margin: auto;
+}
+
+.container {
+    padding-left: 50px;
+}
+.form-group{
+    margin-top:20px;
+}
+
+.wrap {
+    background-color: RGBA(232, 52, 78, 0.2);
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
+
+.banner {
     width: 100%;
     height: 200px;
 
-    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1601024445121-e5b82f020549?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80');
+    background-color: white;
+
+
     background-position: center;
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
 
-    color: white;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    cursor: pointer;
 }
 
-.mypic > h1 {
-    font-size: 30px;
+.banner > button {
+    position:center;
 }
 
-.mybox {
-    width: 95%;
-    max-width: 700px;
+.container {
+    width: 80%;
+    max-width: 800px;
+    margin: 30px auto;
     padding: 20px;
-    box-shadow: 0px 0px 10px 0px lightblue;
-    margin: 20px auto;
+    background-color: white;
+
+    border: solid 1px gray;
+    border-radius: 10px;
 }
 
-.mybucket {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+span.example {
+    color: gray;
+    font-size: 14px;
 }
 
-.mybucket > input {
-    width: 70%;
+.btn-sparta {
+    color: #fff;
+    background-color: #e8344e;
+    border-color: #e8344e;
 }
 
-.mybox > li {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-
-    margin-bottom: 10px;
-    min-height: 48px;
-}
-
-.mybox > li > h2 {
-    max-width: 75%;
-    font-size: 20px;
-    font-weight: 500;
-    margin-right: auto;
-    margin-bottom: 0px;
-}
-
-.mybox > li > h2.done {
-    text-decoration: line-through
+.btn-outline-sparta {
+    color: #e8344e;
+    background-color: transparent;
+    background-image: none;
+    border-color: #e8344e;
 }

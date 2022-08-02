@@ -7,6 +7,8 @@ from flask import *
 # pyjwt를 호출
 import jwt
 
+from datetime import datetime, timedelta, date
+
 app = Flask(__name__)
 # 토큰 생성에 사용될 secret key 를 flask 환경변수에 등록 (session을 사용해도 secret-key는 필요함)
 app.config.update(
@@ -38,7 +40,7 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
         user_info = db.users.find_one({'userid': payload['id']})
-        return render_template('index.html', name=user_info['name'])
+        return render_template('index.html', id=user_info['userid'])
     # 토큰의 유효기간이 만료되었다는 에러문구
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -48,21 +50,29 @@ def home():
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
+# href='/'사용이 안먹을 때 html파일로 바로 연결되도록 등록
+@app.route('/index.html')
+def home1():
+    return render_template('index.html')
+
+
 #한칸을 더 내리면 안됨
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
+
 #회원가입 페이지 이동
 @app.route('/join')
 def join():
     return render_template('join.html')
 
+
 # href='/'사용이 안먹을 때 html파일로 바로 연결되도록 등록
-@app.route('/index.html')
-def home1():
-    return render_template('index.html')
+@app.route('/write')
+def home2():
+    return render_template('write.html')
 
 
 # 회원가입
@@ -72,12 +82,9 @@ def join_ok():
     id_receive = request.form['id_give']
     password_receive = request.form['password_give']
     password2_receive = request.form['password2_give']
-    name_receive = request.form['name_give']
-    tel_receive = request.form['tel_give']
-    mail_receive = request.form['mail_give']
 
     # 공백이 있는지 유효성검사
-    if (id_receive == "" or password_receive == "" or password2_receive == "" or name_receive == "" or tel_receive == "" or mail_receive == ""):
+    if id_receive == "" or password_receive == "" or password2_receive == "":
         return jsonify({'msg': '작성되지 않은 정보가 있습니다.'})
     else:
         # 중복 아이디가 있는지 유효성 검사
@@ -93,14 +100,12 @@ def join_ok():
                 # DB에 저장될 딕셔너리형 자료형으로 대입
                 doc = {
                     'userid': id_receive,
-                    'password': pw_hash,
-                    'name': name_receive,
-                    'tel': tel_receive,
-                    'mail': mail_receive
+                    'password': pw_hash
                 }
                 # 데이터베이스 저장
                 db.users.insert_one(doc)
                 return jsonify({'msg': '회원가입 완료'})
+
 
 # 로그인 되는지 확인하는 함수
 @app.route("/login2", methods=["POST"])
@@ -126,7 +131,7 @@ def login_ok():
             # 하루동안 유효한 토큰
             payload = {
                 'id': inputid_receive,
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)
+                'exp': datetime.utcnow() + timedelta(days=1)
             }
             # jwt를 암호화
             # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
@@ -140,6 +145,44 @@ def login_ok():
         # 아이디가 틀릴 때 출력값
         return jsonify({'result': 'fail', 'msg': '존재하지 않는 계정입니다.'})
 
+
+@app.route('/write2', methods=['POST'])
+def save_post():
+
+    title_receive = request.form['title_give']
+    star_receive = request.form['star_give']
+    address_receive = request.form['address_give']
+    content_receive = request.form['content_give']
+
+    file = request.files['file_give']
+    extension = file.filename.split('.')[-1]
+
+    today = datetime.now()
+    mytime = today.strftime('%y-%m-%d-%H-%M-%S')
+    mydate = today.strftime('%y.%m.%d')
+    filename = f'file-{mytime}'
+
+    save_to = f'static/{filename}.{extension}'
+    file.save(save_to)
+
+    doc = {
+        'title': title_receive,
+        'star': star_receive,
+        'address': address_receive,
+        'content': content_receive,
+        'file': f'{filename}.{extension}',
+        'date': mydate
+    }
+
+    db.posts.insert_one(doc)
+
+    return jsonify({'msg': '저장완료'})
+
+
+@app.route('/write2', methods=['GET'])
+def show_diary():
+    posts = list(db.posts.find({}, {'_id': False}))
+    return jsonify({'all_posts': posts})
 
 
 if __name__ == '__main__':
