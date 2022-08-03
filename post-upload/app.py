@@ -16,11 +16,13 @@ def home():
 def main():
     return render_template('main_test.html')
 
+#데이터베이스에 저장된 게시글을 전송해 main_test.html파일에서 보여줌
 @app.route('/view', methods=['GET'])
 def show_diary():
     diaries = list(db.diary.find({}, {'_id': False}))
     return jsonify({'all_diary': diaries})
 
+#사용자로부터 게시글 데이터가 들어오면 데이터베이스에 저장
 @app.route('/posting', methods=['POST'])
 def save_diary():
     title_receive = request.form['title_give']

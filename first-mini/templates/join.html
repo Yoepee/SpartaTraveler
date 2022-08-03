@@ -1,0 +1,31 @@
+<!--jinja2 템플릿엔진 상속으로 코드 정리-->
+{% extends 'login.html' %}
+{% block login %}
+<h3 class="title has-text-black">회원가입</h3>
+<hr class="login-hr">
+
+<form>
+    <div class="field">
+        <div class="control">
+            <input id="userid" class="input is-large" type="text" placeholder="아이디" autofocus="">
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="control">
+            <input id="password" class="input is-large" type="password" placeholder="비밀번호">
+        </div>
+    </div>
+    <div class="field">
+        <div class="control">
+            <input id="re_password" class="input is-large" type="password" placeholder="비밀번호 확인">
+        </div>
+    </div>
+
+
+    <button onclick="join_user()" class="button is-block is-info is-large is-fullwidth">회원가입
+        <i class="fa fa-sign-in" aria-hidden="true"></i>
+    </button>
+    <p class="has-text-grey"><a href="/login">돌아가기</a></p>
+</form>
+{% endblock %}
