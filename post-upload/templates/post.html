@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <title>게시글 테스트</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- 폰트 --- */
+    * {
+      font-family: 'Jua', sans-serif;
+    }
+
+    /* ---구글 지도 css--- */
+    #googleMap {
+      display: none;
+      height: 300px;
+      width: 50%;
+    }
+  </style>
+
+  <script>
+    $(document).ready(function () {
+      bsCustomFileInput.init()
+    })
+
+    //지도를 보이거나 숨기게 해주는 함수
+    function mapshow(button) {
+      var googlemap = document.getElementById('googleMap');
+      console.log(googlemap.style.display);
+      if (googlemap.style.display == 'block') {
+        googlemap.style.display = 'none';
+        $(button).text('지도 보기');
+      }
+      else {
+        googlemap.style.display = 'block';
+        $(button).text('지도 숨기기');
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <!--  헤더 부분 -->
+  <section class="hero is-info">
+    <div class="hero-body">
+      <p class="title">
+        Sparta Travler
+      </p>
+    </div>
+  </section>
+  
+  <!--  게시글  -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <section class="section is-small">
+
+        <!--  제목과 여행장소  -->
+        <div class="box">
+          <div class="box">
+            <p class="title is-1">Title 1</p>
+            <p class="subtitle is-3">⭐⭐⭐</p>
+          </div>
+
+          <!--  사진  -->
+          <section class="section is-small" style="padding: 12px;">
+            <figure class="image is-3by2">
+              <img src="https://bulma.io/images/placeholders/480x320.png">
+            </figure>
+          </section>
+          <hr style="height:3px; background-color: black;" style="margin: 6px;">
+
+          <!--  여행 장소와 닉네임  -->
+          <div class="card-content" style="padding: 12px">
+            <div class="media">
+              <div class="media-left">
+                <p class="title is-4">John Smith</p>
+                <p class="subtitle is-6">@johnsmith</p>
+              </div>
+                <!--  지도 보기 버튼  -->
+              <div class="buttons">
+                <button class="button is-small" id="googlemapbutton" onclick="mapshow(this)">지도 보기</button>
+              </div>
+            </div>
+          </div>
+
+          <!--  구글지도 만들기  -->
+          <div id="googleMap"></div>
+          <script>
+            var cityHall;
+            function myMap() {
+              var marker_length = 0;
+              var marker;
+              var mapOptions = {
+                center: new google.maps.LatLng(37.566554, 126.978546),
+                zoom: 5
+              };
+              var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+
+              var geocoder = new google.maps.Geocoder();
+
+              // document.getElementById('addressbutton').addEventListener('click', function () {
+              //   geocodeAddress(geocoder, map);
+              // });
+
+              // //구글지도에 마커를 찍어주는 함수
+              // function geocodeAddress(geocoder, resultMap) {
+              //   var address = document.getElementById('address').value;
+
+              //   // 마커 지우기
+              //   if (marker_length > 0) {
+              //     marker.setMap(null);
+              //     marker_length == 0;
+              //   }
+              //   // 입력한 주소의 마커 찍어주기
+              //   geocoder.geocode({ 'address': address }, function (result, status) {
+              //     if (status == 'OK') {
+              //       resultMap.setCenter(result[0].geometry.location);
+              //       resultMap.setZoom(5);
+              //       cityHall = result[0].geometry.location
+              //       marker = new google.maps.Marker({ map: resultMap, position: cityHall });
+              //       marker_length = 1
+              //     }
+              //     else {
+              //       alert('주소가 정확하지 않습니다.' + status);
+              //     }
+              //   });
+              // }
+            }
+          </script>
+          <!--  구글지도  api 연결 -->
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA6mIa4FCbp0S8pua310loupTFqkbGF2I&callback=myMap"></script>
+
+          <!--  내용 -->
+          <div class="content is-medium">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>, tempus
+              quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus
+              diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus.
+              Donec sodales, arcu et sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a neque.
+              Donec dui urna, vehicula et sem eget, facilisis sodales sem.</p>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </section>
+</body>
+
+</html>
