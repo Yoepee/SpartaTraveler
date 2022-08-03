@@ -58,12 +58,13 @@
             let file = diaries[i]['file']
             let time = diaries[i]['time']
             let scope = '⭐'.repeat(Number(diaries[i]['scope']))
-            console.log('⭐' * 4)
             let address = diaries[i]['address']
+            let id = diaries[i]['_id']
+            console.log(diaries[i])
 
             let temp_html = `
                                         <div class="column is-one-quarter">
-                                            <div class="card">
+                                            <div class="card" value=${file} onclick="card_click(this)">
                                               <div class="card-image">
                                                 <figure class="image is-4by3">
                                                   <img src="../static/${file}" alt="Placeholder image">
@@ -108,7 +109,7 @@
         form_data.append("find_name_give", find_name)
         form_data.append("search_name_give", search_name)
         console.log(form_data)
-  
+
         $.ajax({
           type: "POST",
           url: "/search",
@@ -126,13 +127,13 @@
               let file = diaries[i]['file']
               let time = diaries[i]['time']
               let scope = '⭐'.repeat(Number(diaries[i]['scope']))
-              console.log('⭐' * 4)
               let address = diaries[i]['address']
+              let id = diaries[i]['_id']
 
               let temp_html = `
                                           <div class="column is-one-quarter">
-                                              <div class="card">
-                                                <div class="card-image">
+                                              <div class="card" value=${file} onclick="card_click(this)">
+                                                <div class="card-image" >
                                                   <figure class="image is-4by3">
                                                     <img src="../static/${file}" alt="Placeholder image">
                                                   </figure>
@@ -164,6 +165,12 @@
           }
         })
       }
+    }
+
+    function card_click(obj) {
+      let url = "/post?file_name_give="+$(obj).attr("value")
+      window.location.href = url
+
     }
 
   </script>

@@ -47,7 +47,40 @@
   <script>
     $(document).ready(function () {
       bsCustomFileInput.init()
+      show()
     })
+
+    function show() {
+      let file_name = "{{value}}" // 검색 종류
+      console.log("{{value}}",file_name)
+
+      //form_data에 id값 을 저장
+      let form_data = new FormData()
+      form_data.append("file_name_give", file_name)
+      console.log(form_data)
+
+      $.ajax({
+        type: "POST",
+        url: "/showpost",
+        data: form_data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+          let diaries = JSON.parse(response['all_diary'])
+          console.log(diaries)
+          document.getElementById("title").innerHTML = diaries[0]['title']
+          document.getElementById("content").innerHTML = content = diaries[0]['content']
+          document.getElementById("file").src = "../static/" + diaries[0]['file']
+
+          document.getElementById("address").innerHTML = diaries[0]['address']
+          //document.getElementById("time").innerHTML = diaries[0]['time']
+          document.getElementById("scope").innerHTML = '⭐'.repeat(Number(diaries[0]['scope']))
+
+        }
+      })
+
+    }
 
     //지도를 보이거나 숨기게 해주는 함수
     function mapshow(button) {
@@ -62,6 +95,7 @@
         $(button).text('지도 숨기기');
       }
     }
+
   </script>
 </head>
 
@@ -74,7 +108,7 @@
       </p>
     </div>
   </section>
-  
+
   <!--  게시글  -->
   <section class="section">
     <div class="container is-max-desktop">
@@ -83,14 +117,14 @@
         <!--  제목과 여행장소  -->
         <div class="box">
           <div class="box">
-            <p class="title is-1">Title 1</p>
-            <p class="subtitle is-3">⭐⭐⭐</p>
+            <p class="title is-1" id="title"></p>
+            <p class="subtitle is-3" id="scope"></p>
           </div>
 
           <!--  사진  -->
           <section class="section is-small" style="padding: 12px;">
             <figure class="image is-3by2">
-              <img src="https://bulma.io/images/placeholders/480x320.png">
+              <img id="file" src="" style="border-radius: 3%;">
             </figure>
           </section>
           <hr style="height:3px; background-color: black;" style="margin: 6px;">
@@ -99,10 +133,10 @@
           <div class="card-content" style="padding: 12px">
             <div class="media">
               <div class="media-left">
-                <p class="title is-4">John Smith</p>
-                <p class="subtitle is-6">@johnsmith</p>
+                <p class="title is-4" id="address"></p>
+                <p class="subtitle is-6">@name</p>
               </div>
-                <!--  지도 보기 버튼  -->
+              <!--  지도 보기 버튼  -->
               <div class="buttons">
                 <button class="button is-small" id="googlemapbutton" onclick="mapshow(this)">지도 보기</button>
               </div>
@@ -154,15 +188,12 @@
             }
           </script>
           <!--  구글지도  api 연결 -->
-          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA6mIa4FCbp0S8pua310loupTFqkbGF2I&callback=myMap"></script>
+          <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA6mIa4FCbp0S8pua310loupTFqkbGF2I&callback=myMap"></script>
 
           <!--  내용 -->
           <div class="content is-medium">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>, tempus
-              quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus
-              diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus.
-              Donec sodales, arcu et sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a neque.
-              Donec dui urna, vehicula et sem eget, facilisis sodales sem.</p>
+            <p id="content"></p>
           </div>
         </div>
 
