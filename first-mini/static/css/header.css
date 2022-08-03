@@ -1,0 +1,36 @@
+#header {
+    display:flex;
+    justify-content:center;
+    margin-bottom:100px;
+    background:#a8deff;
+}
+.nav {
+    display:flex;
+    justify-content:space-between;
+    width:1200px;
+    height:100px;
+}
+.logo {
+    display:flex;
+    align-items:center;
+}
+.logo a {
+    display:block;
+    width:60px;
+}
+.logo a img {
+    display: block;
+    width:100%;
+}
+
+.gnb_list {
+    display:flex;
+}
+.gnb_list li + li {
+    margin-left:50px;
+}
+.gnb_list li a {
+    font-size:20px;
+    font-weight: 900;
+    line-height:100px;
+}

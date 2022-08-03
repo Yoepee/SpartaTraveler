@@ -1,0 +1,10 @@
+@import "reset.css";
+@import "footer.css";
+@import "header.css";
+
+/*section*/
+@import "writing.css";
+@import "postview.css";
+@import "postlist.css";
+@import "login.css";
+@import "join_membership.css";
