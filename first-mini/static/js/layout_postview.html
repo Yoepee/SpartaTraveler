@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}사랑방 | {{ cafe_name }}{% endblock %}
+
+{% block section %}
+    <div class="wrapper">
+        <div style="display: flex;">
+            <div class="image-show">
+                <img class="postImage" src="{{ cafe_img }}">
+            </div>
+            <div class="writingInfo">
+                <h1 id="writer-show" class="title-address">작성자 ID : {{ writer_id }}</h1>
+                <h1 id="name-show" class="title-address">카페 이름 : {{ cafe_name }}</h1>
+                <h1 class="title-address">카페 주소 : {{ cafe_address }}</h1>
+            </div>
+        </div>
+        <div class="cafe-text">{{ cafe_coment }}</div>
+        <div id="userment-form">
+            <div id="userment-count">댓글 <span id="count"> 0 </span></div>
+            <input id="userment-input" placeholder="댓글을 입력해 주세요.">
+            <button id="userment-submit" onclick="pressBtn()">등 록</button>
+        </div>
+        <div id="userment-list" style="margin-top: 10px;">
+            {% for onement in user_mentlist %}
+                <div class="eachComment">
+                    <div class="name">
+                        {{ onement.user_name }}
+                        {% if current_user == onement.user_name %}
+                            <button class="deleteComment" type="button" onclick="deleteComments(this)">삭제</button>
+                        {% endif %}
+                    </div>
+                    <span class="inputValue">{{ onement.ment }}</span>
+                    <div class="time">{{ onement.date }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/layout_postview.js') }}"></script>
+{% endblock %}

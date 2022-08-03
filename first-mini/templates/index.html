@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
     <!--    부트스트랩       -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 
     <!--  bulma css, js CDN을 통한 사용  -->
@@ -23,10 +26,21 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <!--    파일 불러오기위한 js    -->
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+    <!--    Popper   -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
     <!--    폰트      -->
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Gugi&family=Hi+Melody&family=Square+Peg&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Gugi&family=Hi+Melody&family=Nanum+Pen+Script&family=Square+Peg&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
     <!--  내부 CSS 사용 (static/css)   -->
     <link rel="stylesheet" type="text/css" href="../static/css/base.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <!--    페이지 타이틀     -->
     <title>Sparta Traveler</title>
 
@@ -53,8 +67,8 @@
                         picture = posts[i]['file']
                         date = posts[i]['date']
 
-                        let tmep_html = `<div class="card">
-                                                <img class="card-img-top" src="../static/${picture}" alt="Card image cap">
+                        let tmep_html = `<div class="card" onclick="window.location.href='/detail'">
+                                                <img class="card-img-top" src="../static/img/${picture}" alt="Card image cap">
                                                 <div class="card-body">
                                                     <p>${star_image}</p>
                                                     <h5 class="card-title">${title}</h5>
@@ -70,12 +84,13 @@
         }
 
         function posting() {
-            let title = $('#title').val()
+            let title = $('#inputtitle').val()
             let content = $("#content").val()
             let star = $('#star').val()
             let address = $('#address').val()
             let file = $('#file')[0].files[0]
             let form_data = new FormData()
+
 
             form_data.append("file_give", file)
             form_data.append("title_give", title)
@@ -107,7 +122,8 @@
 <body>
 <div class="wrap">
     <div class="banner" onclick="window.location.href = '/'">
-
+        <div id="title"><b>SpartaTravler</b></div>
+        <div id="subtitle">알리고 싶은 우리들의 여행</div>
     </div>
     <button onclick="window.location.href = '/write'" type="submit" class="btn btn-primary">글쓰기</button>
     <button onclick="logout_user()" type="submit" class="btn btn-primary">로그아웃</button>
@@ -116,15 +132,11 @@
             {% block write %}
             <div class="card-columns" id="post">
 
-
             </div>
-
-            {% endblock %}
-
         </div>
     </div>
 </div>
 </div>
-
+{% endblock %}
 </body>
 </html>

@@ -1,0 +1,98 @@
+.text_box {
+    margin-right: 25%;
+    margin-left: auto;
+    margin-top: 3%;
+    width: 280px;
+}
+
+.signUp {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.line {
+    width: 520px;
+    height: 170px;
+    border: #8464DD;
+}
+
+.box1 {
+    font-size: 27px;
+}
+
+.box2 {
+    font-size: 27px;
+}
+
+.box3 {
+    font-size: 27px;
+}
+
+.join {
+    border: 0 solid #a8deff;
+}
+
+#id {
+    font-size: 27px;
+    border: 1px solid #a8deff;
+    border-radius: 3px;
+}
+
+#pw {
+    font-size: 27px;
+    border: 1px solid #a8deff;
+    border-radius: 3px;
+}
+
+#pw2 {
+    font-size: 27px;
+    border: 1px solid #a8deff;
+    border-radius: 3px;
+}
+
+#joinBox {
+    color: white;
+    background-color: #8464DD;
+    border: 3px solid #8464DD;
+    border-radius: 4px;
+    font-size: 30px;
+    margin-left: 110px;
+}
+
+#checkID {
+    width: 100px;
+    color: white;
+    background-color: #8464DD;
+    border: 3px solid #8464DD;
+    border-radius: 4px;
+    font-size: 22px;
+    margin-left: 2px;
+}
+
+.main_img {
+    width: 600px;
+    height: 500px;
+    margin-left: 270px;
+    margin-top: -50px;
+}
+
+.top_div {
+    height: 400px;
+    display: flex;
+    justify-content: center;
+}
+
+.legends {
+    font-size: 40px;
+    margin-left: 135px;
+    margin-bottom: 40px;
+}
+
+#idCheck {
+    font-size: 10px;
+
+}
+
+.idCheck {
+    color: red;
+}
