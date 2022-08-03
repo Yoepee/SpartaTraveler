@@ -1,9 +1,13 @@
 /*html과 다르게 <style>생략 바로 내용만 작성*/
 /*폰트*/
-
-
 * {
     font-family: 'Jua', sans-serif;
+}
+
+body {
+    height: 100vh;
+    background-image: url('https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/deQA/image/MUA5VDq-wd9_L7NBmrXC5aAyCd4.jpg');
+    background-size: cover;
 }
 
 .custom-file {
@@ -11,40 +15,40 @@
 }
 
 /* ---별점 css--- */
-#myform fieldset {
+#star fieldset {
     display: inline-block; /* 하위 별점 이미지들이 있는 영역만 자리를 차지함.*/
     border: 0; /* 필드셋 테두리 제거 */
 }
 
-#myform input[type=radio] {
+#star input[type=radio] {
     display: none; /* 라디오박스 감춤 */
 }
 
-#myform label {
+#star label {
     font-size: 3em; /* 이모지 크기 */
     color: transparent; /* 기존 이모지 컬러 제거 */
     text-shadow: 0 0 0 #f0f0f0; /* 새 이모지 색상 부여 */
 }
 
-#myform label:hover {
+#star label:hover {
     text-shadow: 0 0 0 #a00; /* 마우스 호버 */
 }
 
-#myform label:hover ~ label {
+#star label:hover ~ label {
     text-shadow: 0 0 0 #a00; /* 마우스 호버 뒤에오는 이모지들 */
 }
 
-#myform fieldset {
+#star fieldset {
     display: inline-block; /* 하위 별점 이미지들이 있는 영역만 자리를 차지함.*/
     direction: rtl; /* 이모지 순서 반전 */
     border: 0; /* 필드셋 테두리 제거 */
 }
 
-#myform fieldset legend {
+#star fieldset legend {
     text-align: left;
 }
 
-#myform input[type=radio]:checked ~ label {
+#star input[type=radio]:checked ~ label {
     text-shadow: 0 0 0 #a00; /* 마우스 클릭 체크 */
 }
 
@@ -65,4 +69,32 @@
     font-size: 50px;
     text-align: center;
     font-family: 'Nanum Pen Script', cursive;
+}
+
+* {
+    font-family: 'Jua', sans-serif;
+}
+
+.posting-box {
+    width: 500px;
+    margin-top: 20px;
+}
+
+.wrap {
+    width: 900px;
+    margin: auto;
+}
+
+.container {
+    padding-left: 50px;
+}
+
+.posting-box > .custom-file {
+    margin-bottom: 20px;
+}
+
+.save-date {
+    color: gray;
+    font-size: 14px;
+    margin-bottom: 0;
 }

@@ -25,6 +25,8 @@ m.update(', it is very hard'.encode('utf-8'))
 # 토큰을 위한 시크릿 키
 SECRET_KEY = 'SPARTA'
 
+num = 0
+
 # 데이터베이스
 from pymongo import MongoClient
 
@@ -36,18 +38,36 @@ db = client.dbsparta
 @app.route('/')
 def home():
     token_receive = request.cookies.get('mytoken')
+    savetoken_receive = request.cookies.get('save_login')
     # 토큰 유효성검사
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
-        user_info = db.users.find_one({'userid': payload['id']})
-        return render_template('index.html', id=user_info['userid'])
-    # 토큰의 유효기간이 만료되었다는 에러문구
+        payload2 = jwt.decode(savetoken_receive, SECRET_KEY, algorithms='HS256')
+        user_info = db.users.find_one({'userid': payload2['id']})
+        return render_template('index.html', id=user_info['userid'], name=user_info['name'])
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
-    # 토큰이 유효하지 않다는 에러문구
+        try:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+            user_info = db.users.find_one({'userid': payload['id']})
+            return render_template('index.html', id=user_info['userid'], name=user_info['name'])
+        # 토큰의 유효기간이 만료되었다는 에러문구
+        except jwt.ExpiredSignatureError:
+            return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        # 토큰이 유효하지 않다는 에러문구
+        except jwt.exceptions.DecodeError:
+            # return jsonify({'result': 'fail', 'msg': "로그인이 필요합니다!"})
+            return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
     except jwt.exceptions.DecodeError:
-        # return jsonify({'result': 'fail', 'msg': "로그인이 필요합니다!"})
-        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+        try:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+            user_info = db.users.find_one({'userid': payload['id']})
+            return render_template('index.html', id=user_info['userid'], name=user_info['name'])
+        # 토큰의 유효기간이 만료되었다는 에러문구
+        except jwt.ExpiredSignatureError:
+            return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        # 토큰이 유효하지 않다는 에러문구
+        except jwt.exceptions.DecodeError:
+            # return jsonify({'result': 'fail', 'msg': "로그인이 필요합니다!"})
+            return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
 # href='/'사용이 안먹을 때 html파일로 바로 연결되도록 등록
@@ -59,10 +79,6 @@ def home1():
 #한칸을 더 내리면 안됨
 @app.route('/login')
 def login():
-    token_receive = request.cookies.get('mytoken')
-    if token_receive is not None:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
-
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
@@ -75,20 +91,38 @@ def join():
 
 # 글 작성시 token을 확인하여 넘겨주기 위한 내용
 @app.route('/write')
-def home2():
+def writing():
     token_receive = request.cookies.get('mytoken')
+    savetoken_receive = request.cookies.get('save_login')
     # 토큰 유효성검사
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+        payload = jwt.decode(savetoken_receive, SECRET_KEY, algorithms='HS256')
         user_info = db.users.find_one({'userid': payload['id']})
-        return render_template('write.html', id=user_info['userid'])
-    # 토큰의 유효기간이 만료되었다는 에러문구
+        return render_template('write.html', id=user_info['userid'], name=user_info['name'])
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
-    # 토큰이 유효하지 않다는 에러문구
+        try:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+            user_info = db.users.find_one({'userid': payload['id']})
+            return render_template('write.html', id=user_info['userid'], name=user_info['name'])
+        # 토큰의 유효기간이 만료되었다는 에러문구
+        except jwt.ExpiredSignatureError:
+            return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        # 토큰이 유효하지 않다는 에러문구
+        except jwt.exceptions.DecodeError:
+            # return jsonify({'result': 'fail', 'msg': "로그인이 필요합니다!"})
+            return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
     except jwt.exceptions.DecodeError:
-        # return jsonify({'result': 'fail', 'msg': "로그인이 필요합니다!"})
-        return redirect(url_for("login", msg="로그인을 하지않으면 글을 작성할 수 없습니다."))
+        try:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+            user_info = db.users.find_one({'userid': payload['id']})
+            return render_template('write.html', id=user_info['userid'], name=user_info['name'])
+        # 토큰의 유효기간이 만료되었다는 에러문구
+        except jwt.ExpiredSignatureError:
+            return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        # 토큰이 유효하지 않다는 에러문구
+        except jwt.exceptions.DecodeError:
+            # return jsonify({'result': 'fail', 'msg': "로그인이 필요합니다!"})
+            return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
 # 회원가입
@@ -140,6 +174,7 @@ def login_ok():
     # html로 부터 받아오는 변수값 저장
     inputid_receive = request.form['inputid_give']
     inputpw_receive = request.form['inputpw_give']
+    chklogin_receive = request.form['chklogin_give']
 
     # join과 동일한 방식으로 pw 암호화
     pw_hash = hashlib.sha256(inputpw_receive.encode('utf-8')).hexdigest()
@@ -160,11 +195,23 @@ def login_ok():
                 'id': inputid_receive,
                 'exp': datetime.utcnow() + timedelta(days=1)
             }
-            # jwt를 암호화
-            # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
-            token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-            # 로그인 성공, 토큰 전달
-            return jsonify({'result': 'success', 'token': token})
+            if chklogin_receive:
+                payload2 = {
+                    'id': inputid_receive,
+                    'exp': datetime.utcnow() + timedelta(days=365)
+                }
+                # jwt를 암호화
+                # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+                token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+                savetoken = jwt.encode(payload2, SECRET_KEY, algorithm='HS256')
+                # 로그인 성공, 토큰 전달
+                return jsonify({'result': 'success', 'token': token, 'savetoken': savetoken})
+            else:
+                # jwt를 암호화
+                # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
+                token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+                # 로그인 성공, 토큰 전달
+                return jsonify({'result': 'success', 'token': token})
         else:
             # 비밀번호가 틀릴 때 출력값
             return jsonify({'result': 'fail', 'msg': '비밀번호가 다릅니다.'})
@@ -179,7 +226,6 @@ def save_post():
     payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
     user_info = db.users.find_one({'userid': payload['id']})
 
-
     title_receive = request.form['title_give']
     star_receive = request.form['star_give']
     address_receive = request.form['address_give']
@@ -193,22 +239,29 @@ def save_post():
     mydate = today.strftime('%y.%m.%d')
     filename = f'file-{mytime}'
 
-    save_to = f'static/img/{filename}.{extension}'
-    file.save(save_to)
+    if title_receive == "" or star_receive == "" or address_receive == "" or content_receive == "":
+        return jsonify({'result': 'fail', 'msg': '작성되지 않은 정보가 있습니다.'})
+    else:
+        save_to = f'static/img/{filename}.{extension}'
+        file.save(save_to)
 
-    doc = {
-        'title': title_receive,
-        'star': star_receive,
-        'address': address_receive,
-        'content': content_receive,
-        'file': f'{filename}.{extension}',
-        'date': mydate,
-        'name' : user_info['name']
-    }
+        global num
+        num = num+1
 
-    db.posts.insert_one(doc)
+        doc = {
+            'title': title_receive,
+            'star': star_receive,
+            'address': address_receive,
+            'content': content_receive,
+            'file': f'{filename}.{extension}',
+            'date': mydate,
+            'name': user_info['name'],
+            'num': num
+        }
 
-    return jsonify({'msg': '저장완료'})
+        db.posts.insert_one(doc)
+
+        return jsonify({'result': 'success', 'msg': '저장완료'})
 
 
 @app.route('/checking', methods=['POST'])
@@ -254,7 +307,37 @@ def show_diary():
 
 @app.route('/detail', methods=['GET'])
 def show_detail():
-    return render_template('detail.html')
+    token_receive = request.cookies.get('mytoken')
+    savetoken_receive = request.cookies.get('save_login')
+    # 토큰 유효성검사
+    try:
+        payload = jwt.decode(savetoken_receive, SECRET_KEY, algorithms='HS256')
+        user_info = db.users.find_one({'userid': payload['id']})
+        return render_template('detail.html', id=user_info['userid'], name=user_info['name'])
+    except jwt.ExpiredSignatureError:
+        try:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+            user_info = db.users.find_one({'userid': payload['id']})
+            return render_template('detail.html', id=user_info['userid'], name=user_info['name'])
+        # 토큰의 유효기간이 만료되었다는 에러문구
+        except jwt.ExpiredSignatureError:
+            return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        # 토큰이 유효하지 않다는 에러문구
+        except jwt.exceptions.DecodeError:
+            # return jsonify({'result': 'fail', 'msg': "로그인이 필요합니다!"})
+            return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+    except jwt.exceptions.DecodeError:
+        try:
+            payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+            user_info = db.users.find_one({'userid': payload['id']})
+            return render_template('detail.html', id=user_info['userid'], name=user_info['name'])
+        # 토큰의 유효기간이 만료되었다는 에러문구
+        except jwt.ExpiredSignatureError:
+            return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        # 토큰이 유효하지 않다는 에러문구
+        except jwt.exceptions.DecodeError:
+            # return jsonify({'result': 'fail', 'msg': "로그인이 필요합니다!"})
+            return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
 if __name__ == '__main__':

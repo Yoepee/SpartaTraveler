@@ -67,17 +67,35 @@
                         picture = posts[i]['file']
                         date = posts[i]['date']
 
-                        let tmep_html = `<div class="card" onclick="window.location.href='/detail'">
-                                                <img class="card-img-top" src="../static/img/${picture}" alt="Card image cap">
-                                                <div class="card-body">
-                                                    <p>${star_image}</p>
-                                                    <h5 class="card-title">${title}</h5>
-                                                    <p class="card-text">${content}</p>
-                                                    <p>${address}</p>
-                                                    <p style="color: gray" class="card-text">${date}</p>
+                        let tmep_html = `<div class="column is-one-quarter">
+                                            <div class="card">
+                                              <div class="card-image">
+                                                <figure class="image is-4by3">
+                                                  <img src="../static/img/${picture}" alt="Placeholder image">
+                                                </figure>
+                                              </div>
+                                              <div class="card-content">
+                                                <div class="media" style='margin-bottom:12px;'>
+                                                  <div class="media-left">
+                                                    <figure class="image is-48x48">
+                                                      <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                                                    </figure>
+                                                  </div>
+                                                  <div class="media-content">
+                                                    <p class="title is-4">${title}</p>
+                                                    <p class="subtitle is-6">${address}</p>
+                                                  </div>
                                                 </div>
-                                            </div>`
-                        $('#post').append(tmep_html)
+                                                <p class="subtitle is-6">${star_image}</p>
+                                                <div class="content">
+                                                  ${content}
+                                                  <br><br>
+                                                  <time datetime="2016-1-1">${date}</time>
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </div>`
+                        $('#cards-box').append(tmep_html)
                     }
                 }
             })
@@ -86,11 +104,13 @@
         function posting() {
             let title = $('#inputtitle').val()
             let content = $("#content").val()
-            let star = $('#star').val()
+            let star = $(':radio[name="rating"]:checked').val()
             let address = $('#address').val()
             let file = $('#file')[0].files[0]
             let form_data = new FormData()
 
+            if(file == null)
+            { alert("사진을 등록해주세요.")}
 
             form_data.append("file_give", file)
             form_data.append("title_give", title)
@@ -106,37 +126,83 @@
                 contentType: false,
                 processData: false,
                 success: function (response) {
-                    alert(response["msg"])
-                    window.location.href="/"
+                    if (response["result"] == 'success') {
+                        alert(response["msg"])
+                        window.location.href = '/'
+                    }
+                    else {
+                        //로그인 실패시 에러메세지 출력
+                        alert(response["msg"])
+                    }
                 }
             });
         }
 
         function logout_user() {
             $.removeCookie('mytoken')
+            $.removeCookie('save_login', {path: '/'});
             alert('로그아웃!')
             window.location.href = '/login'
         }
     </script>
 </head>
 <body>
-<div class="wrap">
-    <div class="banner" onclick="window.location.href = '/'">
-        <div id="title"><b>SpartaTravler</b></div>
-        <div id="subtitle">알리고 싶은 우리들의 여행</div>
-    </div>
+<!--  헤더 부분 -->
+
+<div class="banner" onclick="window.location.href = '/'">
+    <div id="title"><b>SpartaTravler</b></div>
+    <div id="subtitle">알리고 싶은 우리들의 여행</div>
+</div>
+</div>
+<div>
+    <p>{{name}}님 반갑습니다!</p>
     <button onclick="window.location.href = '/write'" type="submit" class="btn btn-primary">글쓰기</button>
     <button onclick="logout_user()" type="submit" class="btn btn-primary">로그아웃</button>
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            {% block write %}
-            <div class="card-columns" id="post">
-
-            </div>
-        </div>
+</div>
+{% block write %}
+<section class="section">
+    <div class="field has-addons">
+        <p class="control">
+        <span class="select">
+          <select name="find_name">
+            <option value="title">제목</option>
+            <option value="content">내용</option>
+            <option value="address">장소</option>
+          </select>
+        </span>
+        </p>
+        <p class="control is-expanded">
+            <input class="input" type="text" id="search_bar" placeholder="Amount of money">
+        </p>
+        <p class="control">
+            <button class="button" onclick="search()">검색</button>
+        </p>
     </div>
-</div>
-</div>
+</section>
+
+<!--  게시글 카드가 들어가는 공간 -->
+<section class="section" style="background-color: white">
+    <div class='columns is-multiline' id="cards-box">
+
+    </div>
+
+</section>
+
+<!--<div class="wrap">-->
+<!--    <div class="banner" onclick="window.location.href = '/'">-->
+<!--        <div id="title"><b>SpartaTravler</b></div>-->
+<!--        <div id="subtitle">알리고 싶은 우리들의 여행</div>-->
+<!--    </div>-->
+
+<!--    <div class="jumbotron jumbotron-fluid">-->
+<!--        <div class="container">-->
+
+<!--            <div class="card-columns" id="post">-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 {% endblock %}
 </body>
 </html>
