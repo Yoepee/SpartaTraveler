@@ -135,6 +135,11 @@
             //클라이언트로부터 아이디와 비밀번호 전달
             let inputid = $('#inputid').val();
             let inputpw = $('#inputpw').val();
+            let chk_login = false;
+
+            if($("input:checkbox[name='save_login']:checked").val()){
+                chk_login = true;
+            }
 
             //서버로 아이디 비밀번호 전달 후 검사
             $.ajax({
@@ -144,6 +149,7 @@
                 data: {
                     inputid_give: inputid,
                     inputpw_give: inputpw,
+                    chklogin_give: chk_login
                 },
 
                 success: function (response) {
@@ -162,7 +168,7 @@
                             //jwt를 쿠키에 넣는다, path경로를 설정하면 설정한 경로 하위경로에만 쿠키가 전달됨
                             $.cookie('mytoken', response['token'], {path: '/'});
                             //365일동안 유효한 자동로그인 쿠키또한 발급
-                            $.cookie('save_login', response['token'], { expires: 365, path: '/'});
+                            $.cookie('save_login', response['savetoken'], {path: '/'});
                         }
                         else {
                             //자동로그인체크박스가 해제되었다면 자동로그인 쿠키 삭제
