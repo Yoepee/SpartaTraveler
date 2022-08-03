@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
     <!--    부트스트랩       -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -24,19 +24,86 @@
     <!--    쿠키를 사용하기 위한 javascript      -->
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <!--    아이콘 js    -->
+    <script src="https://kit.fontawesome.com/d48a88bd01.js" crossorigin="anonymous"></script>
     <!--    폰트      -->
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Gugi&family=Hi+Melody&family=Square+Peg&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Gugi&family=Hi+Melody&family=Nanum+Pen+Script&family=Square+Peg&display=swap"
+          rel="stylesheet">
     <!--  내부 CSS 사용 (static/css)   -->
     <link rel="stylesheet" type="text/css" href="../static/css/login.css">
+
     <!--    페이지 타이틀     -->
     <title>Sparta Traveler</title>
     <script>
+         window.onload = function() {
+            if ($.cookie('save_email')) {
+                $("#inputid").val($.cookie('save_email'))
+                $("#remember_ckb").prop("checked",true)
+            }
+            if ($.cookie('save_login')) {
+                window.location.href("/index")
+            }
+        }
+        //아이디 중복 검사
+        function check_id() {
+            let userid = $('#userid').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/checking",
+                data: {
+                    id_give: userid,
+                },
+                success: function (response) {
+                    //로그인이 정상적으로 되면, 토큰을 받아옵니다.
+                    //이 토큰을 'mytoken'이라는 키 값으로 쿠기에 저장합니다.
+                    if (response["result"] == 'success') {
+                        $('#help-id').text(response["msg"]).removeClass("is-danger").addClass("is-success")
+                    } else {
+                        //로그인 실패시 에러메세지 출력
+                        //검사결과 help-id 출력
+                        $('#help-id').text(response["msg"]).removeClass("is-safe").addClass("is-danger")
+                        $("#userid").focus()
+                    }
+                }
+            })
+        }
+
+        //닉네임 중복 검사
+        function check_name() {
+            let username = $('#username').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/checking2",
+                data: {
+                    name_give: username,
+                },
+                success: function (response) {
+                    //로그인이 정상적으로 되면, 토큰을 받아옵니다.
+                    //이 토큰을 'mytoken'이라는 키 값으로 쿠기에 저장합니다.
+                    if (response["result"] == 'success') {
+                        $('#help-name').text(response["msg"]).removeClass("is-danger").addClass("is-success")
+                    } else {
+                        //로그인 실패시 에러메세지 출력
+                        //검사결과 help-id 출력
+                        $('#help-name').text(response["msg"]).removeClass("is-safe").addClass("is-danger")
+                        $("#username").focus()
+                    }
+                }
+            })
+        }
+
         //회원가입
         function join_user() {
             //회원가입에 필요한 변수값 저장
             let userid = $('#userid').val();
             let password = $('#password').val();
-            let password2 = $('#re_password').val();
+            let password2 = $('#password2').val();
+            let username = $('#username').val();
 
 
             //서버로 값 전달
@@ -46,7 +113,8 @@
                 data: {
                     id_give: userid,
                     password_give: password,
-                    password2_give: password2
+                    password2_give: password2,
+                    name_give: username
                 },
                 //성공시 서버로부터 메세지 수신 ex)회원가입 성공, 작성하지 않은 정보, 비밀번호 틀림 등
                 success: function (response) {
@@ -56,6 +124,7 @@
                     } else {
                         //로그인 실패시 에러메세지 출력
                         alert(response["msg"])
+                        $("#help-password2").text(response["msg"]).removeClass("is-safe").addClass("is-danger")
                     }
                 }
             });
@@ -67,7 +136,7 @@
             let inputid = $('#inputid').val();
             let inputpw = $('#inputpw').val();
 
-            //서버로 아이디 비밀번호 전달 후 검사사
+            //서버로 아이디 비밀번호 전달 후 검사
             $.ajax({
                 type: "POST",
                 url: "/login2",
@@ -81,8 +150,27 @@
                     //로그인이 정상적으로 되면, 토큰을 받아옵니다.
                     //이 토큰을 'mytoken'이라는 키 값으로 쿠기에 저장합니다.
                     if (response["result"] == 'success') {
-                        $.cookie('mytoken', response['token']);
-                        alert('로그인 완료!')
+                        if($("input:checkbox[name='save']:checked").val()){
+                             // $.cookie('쿠키이름', 저장될 값, { expires: 저장기간, path: 쿠키가사용될경료(/일시 사이트 모든페이지), domain: 쿠키가 적용되는 도메인(기본은 생성된 도메인) secure: true사용시 https프로토콜에서만 사용가능 });
+                            $.cookie('save_email', inputid, { expires: 365, path: '/login'});
+                            //로그인에서만 쿠기를 사용하니 경로는 /login으로 설정
+                        }
+                        else{
+                            $.removeCookie('save_email', {path: '/login'});
+                        }
+                        if($("input:checkbox[name='save_login']:checked").val()) {
+                            //jwt를 쿠키에 넣는다, path경로를 설정하면 설정한 경로 하위경로에만 쿠키가 전달됨
+                            $.cookie('mytoken', response['token'], {path: '/'});
+                            //365일동안 유효한 자동로그인 쿠키또한 발급
+                            $.cookie('save_login', response['token'], { expires: 365, path: '/'});
+                        }
+                        else {
+                            //자동로그인체크박스가 해제되었다면 자동로그인 쿠키 삭제
+                            $.removeCookie('save_login', {path: '/'});
+                            $.cookie('mytoken', response['token'], {path: '/'});
+                            alert('로그인 완료!')
+                        }
+
                         window.location.href = '/'
                     } else {
                         //로그인 실패시 에러메세지 출력
@@ -94,46 +182,66 @@
     </script>
 </head>
 <body>
-<section class="hero is-success is-fullheight has-background-info-light">
-    <div class="hero-body">
-        <div class="container has-text-centered">
-            <div class="column is-4 is-offset-4">
-                <div class="box">
-                    {% block login %}
-                    <h3 class="title has-text-black">Sparta Traveler</h3>
-                    <hr class="login-hr">
-
-                    <form>
-                        <div class="field">
-                            <div class="control">
-                                <span class="icon"><i class="fas fa-username"></i></span>
-                                <input id="inputid" class="input is-large" type="text" placeholder="아이디" autofocus="">
+<div id="title"><b>SpartaTravler</b></div>
+{% block login %}
+<div id="subtitle">알리고 싶은 우리들의 여행</div>
+<section class="section">
+    <div class="container" id="input-box">
+        <div class="box" style="max-width: 480px;margin:auto">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <label class="label">Email</label>
+                        <div class="field has-addons">
+                            <div class="control has-icons-left" style="width:100%">
+                                <input id="inputid" class="input" type="text" placeholder="이메일">
+                                <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
                             </div>
                         </div>
-
+                        <p id="help-id-login" class="help is-danger"></p>
+                        <label class="label">Password</label>
                         <div class="field">
-                            <div class="control">
-                                <input id="inputpw" class="input is-large" type="password" placeholder="비밀번호">
+                            <div class="control has-icons-left">
+                                <input id="inputpw" class="input" type="password" placeholder="비밀번호">
+                                <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
                             </div>
+                            <p id="help-password-login" class="help is-danger"></p>
                         </div>
-                        <div class="field">
-                            <label class="checkbox"><input type="checkbox">아이디 저장</label>
-                        </div>
-                        <button onclick="login_user()" class="button is-block is-info is-large is-fullwidth">로그인
-                            <i class="fa fa-sign-in" aria-hidden="true"></i>
-                        </button>
+                        <label class="checkbox">
+                            <span>
+                                <input id="remember_ckb" type="checkbox" name="save" value="true">
+                                아이디 저장
+                            </span>
+                        </label>
+                        <label>
+                            <span id="sss">
+                                <input id="login_ckb" type="checkbox" name="save_login" value="true">
+                                자동 로그인
+                           </span>
 
-                    </form>
-                    <p class="has-text-grey">
-                        <a href="/join">계정이 없으신가요? 회원가입</a>
-                    </p>
-                    {% endblock %}
+                        </label>
+
+                    </div>
+                    <div id="div-sign-in-or-up" class="has-text-centered">
+                        <nav class="level is-mobile">
+                            <button class="level-item button blue_btn" onclick="login_user()">
+                                로그인
+                            </button>
+                        </nav>
+                        <hr>
+                        <h4 class="mb-3" style="color: #46649B">아직 회원이 아니신가요?</h4>
+                        <nav class="level is-mobile">
+                            <button class="level-item button white_btn"
+                                    onclick="location.href='/join'">
+                                회원가입하기
+                            </button>
+                        </nav>
+                    </div>
                 </div>
-
-            </div>
+            </article>
         </div>
     </div>
 </section>
-
+{% endblock %}
 </body>
 </html>
