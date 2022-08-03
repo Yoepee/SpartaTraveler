@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
@@ -16,11 +16,11 @@
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 
     <title>글 작성 페이지</title>
 
@@ -30,52 +30,54 @@
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
     <style>
+        /* ---폰트 적용--- */
         * {
             font-family: 'Jua', sans-serif;
         }
 
-        /* ---사진과 장소 입력폼 사이 거리 간격 추가--- */
-        .custom-file{
+        /* ---사진과 장소 입력폼 사이 거리 간격 늘리기--- */
+        .custom-file {
             margin-bottom: 5px;
         }
 
         /* ---별점 css--- */
-        #myform fieldset{
+        #myform fieldset {
             display: inline-block; /* 하위 별점 이미지들이 있는 영역만 자리를 차지함.*/
             border: 0; /* 필드셋 테두리 제거 */
         }
-        #myform input[type=radio]{
+        #myform input[type=radio] {
             display: none; /* 라디오박스 감춤 */
         }
-        #myform label{
+        #myform label {
             font-size: 3em; /* 이모지 크기 */
-            color: rgba(0,0,0,0); /* 기존 이모지 컬러 제거 */
+            color: rgba(0, 0, 0, 0); /* 기존 이모지 컬러 제거 */
             text-shadow: 0 0 0 #ffffff; /* 새 이모지 색상 부여 */
         }
-        #myform label:hover{
-            color: rgba(0,0,0,1);
+        #myform label:hover {
+            color: rgba(0, 0, 0, 1);
             text-shadow: 0 0 0 #f7f008; /* 마우스 호버 */
         }
-        #myform label:hover ~ label{
-            color: rgba(0,0,0,1);
+        #myform label:hover~label {
+            color: rgba(0, 0, 0, 1);
             text-shadow: 0 0 0 #f7f008; /* 마우스 호버 뒤에오는 이모지들 */
         }
-        #myform fieldset{
+        #myform fieldset {
             display: inline-block; /* 하위 별점 이미지들이 있는 영역만 자리를 차지함.*/
             direction: rtl; /* 이모지 순서 반전 */
             border: 0; /* 필드셋 테두리 제거 */
         }
-        #myform fieldset legend{
+        #myform fieldset legend {
             text-align: left;
         }
-        #myform input[type=radio]:checked ~ label{
-            color: rgba(0,0,0,1);
+        #myform input[type=radio]:checked~label {
+            color: rgba(0, 0, 0, 1);
             text-shadow: 0 0 0 #f7f008; /* 마우스 클릭 체크 */
         }
 
-        .posting-box{
-            padding:60px;
-            border:3px solid black;
+        /*posting-box 테두리 검은선 추가  */
+        .posting-box {
+            padding: 60px;
+            border: 3px solid black;
             border-radius: 30px;
             background-color: #ced4da;
         }
@@ -86,14 +88,15 @@
             height: 300px;
             width: 50%;
         }
+
     </style>
+
     <script>
         $(document).ready(function () {
             bsCustomFileInput.init()
-
-
         })
 
+        //작성한 글을 서버로 보내는 함수
         function posting() {
             let title = $('#title').val() // 제목
             let content = $("#content").val() // 내용
@@ -101,6 +104,7 @@
             let address = $("#address").val() //주소
             let file = $('#file')[0].files[0] // 사진
 
+            //form_data에 제목 내용 별점 주소 사진 저장
             let form_data = new FormData()
             form_data.append("file_give", file)
             form_data.append("title_give", title)
@@ -110,7 +114,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/diary",
+                url: "/posting",
                 data: form_data,
                 cache: false,
                 contentType: false,
@@ -122,21 +126,19 @@
             });
         }
 
-        function mapshow(button){
+        //지도를 보이거나 숨기게 해주는 함수
+        function mapshow(button) {
             var googlemap = document.getElementById('googleMap');
             console.log(googlemap.style.display);
-              if(googlemap.style.display == 'block') {
+            if (googlemap.style.display == 'block') {
                 googlemap.style.display = 'none';
                 $(button).text('지도 보이기');
-              }
-              else {
+            }
+            else {
                 googlemap.style.display = 'block';
                 $(button).text('지도 숨기기');
-              }
-
+            }
         }
-
-
 
     </script>
 </head>
@@ -144,16 +146,18 @@
 <body>
     <div class="container is-max-desktop ">
         <div class="section is-medium is-primary">
-            <div class="posting-box" >
+            <div class="posting-box">
                 <h1 class="title is-1">글 작성하기</h1>
+
                 <hr style="height:3px; background-color: black;">
+
                 <div class="section id-small">
 
                     <p class="title is-2">여행은 즐거우셨나요?</p>
                     <p class="subtitle is-4">이번 여행에 대해 평점을 매겨주세요</p>
 
                     <!--  별점 만들기  -->
-                    <div id="myform" >
+                    <div id="myform">
                         <div id="stars" style=" width: 370px;margin:auto;display: block;">
                             <fieldset>
                                 <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
@@ -166,13 +170,17 @@
                     </div>
                 </div>
 
+                <!--  제목 입력 창  -->
                 <div class="form-group">
                     <input type="text" class="form-control" id="title" placeholder="제목">
                 </div>
+
+                <!--  내용 입력 창  -->
                 <div class="form-group">
                     <textarea class="form-control" id="content" rows="10" placeholder="내용 입력"></textarea>
                 </div>
 
+                <!--  사진 저장  -->
                 <div class="custom-file">
                     <input type="file" class="custom-file-input" id="file">
                     <label class="custom-file-label" for="file">사진 선택하기</label>
@@ -187,57 +195,61 @@
                         <button type="submit" class="button is-info" id="addressbutton">주소 검색</button>
                     </div>
                     <div class="buttons" style="padding-left:5px">
-                      <button class="button is-info" id="googlemapbutton" onclick="mapshow(this)">지도 보이기</button>
+                        <button class="button is-info" id="googlemapbutton" onclick="mapshow(this)">지도 보이기</button>
                     </div>
                 </div>
 
-                 <!--  구글지도 만들기  -->
-                <div id="googleMap" ></div>
+                <!--  구글지도 만들기  -->
+                <div id="googleMap"></div>
                 <script>
-                var cityHall;
-                    function myMap(){
+                    var cityHall;
+                    function myMap() {
                         var marker_length = 0;
                         var marker;
                         var mapOptions = {
-                            center:new google.maps.LatLng(37.566554, 126.978546),
-                            zoom:5
+                            center: new google.maps.LatLng(37.566554, 126.978546),
+                            zoom: 5
                         };
-                        var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions );
+                        var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
 
                         var geocoder = new google.maps.Geocoder();
 
-                        document.getElementById('addressbutton').addEventListener('click',function(){
-                             geocodeAddress(geocoder, map);
+                        document.getElementById('addressbutton').addEventListener('click', function () {
+                            geocodeAddress(geocoder, map);
                         });
 
-                        function geocodeAddress(geocoder, resultMap){
-                             var address = document.getElementById('address').value;
+                        //구글지도에 마커를 찍어주는 함수
+                        function geocodeAddress(geocoder, resultMap) {
+                            var address = document.getElementById('address').value;
 
-                             // 마커 지우기
-                             if(marker_length > 0){
+                            // 마커 지우기
+                            if (marker_length > 0) {
                                 marker.setMap(null);
                                 marker_length == 0;
-                             }
-                             geocoder.geocode({'address':address},function(result, status){
-                                 if(status == 'OK'){
-                                     resultMap.setCenter(result[0].geometry.location);
-                                     resultMap.setZoom(5);
-                                     cityHall = result[0].geometry.location
-                                     marker = new google.maps.Marker({map:resultMap,position: cityHall});
-                                     marker_length = 1
-                                 }
-                                 else{
-                                     alert('주소가 정확하지 않습니다.'+ status);
-                                 }
-                             });
+                            }
+                            // 입력한 주소의 마커 찍어주기
+                            geocoder.geocode({ 'address': address }, function (result, status) {
+                                if (status == 'OK') {
+                                    resultMap.setCenter(result[0].geometry.location);
+                                    resultMap.setZoom(5);
+                                    cityHall = result[0].geometry.location
+                                    marker = new google.maps.Marker({ map: resultMap, position: cityHall });
+                                    marker_length = 1
+                                }
+                                else {
+                                    alert('주소가 정확하지 않습니다.' + status);
+                                }
+                            });
                         }
                     }
                 </script>
+                <!--  구글지도  api 연결 -->
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA6mIa4FCbp0S8pua310loupTFqkbGF2I&callback=myMap"></script>
 
 
                 <div class="section" style="margin-top:">
-                    <button onclick="posting()" type="button" class="button is-large is-fullwidth is-info" style="margin:auto;display: block; ">업로드</button>
+                    <button onclick="posting()" type="button" class="button is-large is-fullwidth is-info"
+                        style="margin:auto;display: block; ">업로드</button>
 
                 </div>
             </div>
