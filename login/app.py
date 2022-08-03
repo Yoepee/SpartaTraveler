@@ -2,9 +2,12 @@ from pymongo import MongoClient
 import jwt
 import datetime
 import hashlib
-from flask import Flask, render_template, jsonify, request, redirect, url_for
+from flask import Flask, render_template, jsonify, request, redirect, url_for, make_response
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
+
+# 자동로그인 기한 관리를 위한 상수날짜
+CONST_EXP = datetime(2025, 1, 1)
 
 
 app = Flask(__name__)
@@ -15,7 +18,6 @@ SECRET_KEY = 'SPARTATRAVELER'
 
 client = MongoClient('mongodb+srv://test:sparta@cluster0.y2pfd99.mongodb.net/?retryWrites=true&w=majority')
 db = client.spartatraveler
-
 
 @app.route('/')
 # 자동로그인성공시 GET /favicon.ico HTTP/1.1 404 에러가 발생하는데 아이콘 누락오류라고함 실행에는 지장이없음
@@ -89,29 +91,50 @@ def sign_in():
     # 로그인
     email_receive = request.form['email_give']
     password_receive = request.form['password_give']
+    # 로그인저장체크
+    chk_login_recevie = request.form['chk_login_give']
 
     # 받아온 암호를 복호화
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
-    # 데이터베이스의 정보와 유저이름과 복호화된 암호를 비교
+    # 데이터베이스의 정보와 유저이름과 암호화된 암호를 비교
     result = db.users.find_one({'email': email_receive, 'password': pw_hash})
 
     # 유저를 찾았을 경우
     if result is not None:
-
+        username = result.get('username')
         # 페이로드 작성
         payload = {
-         'id': result.get('username'),
+         'id': username,
         # 로그인 하룻동안 유지 (24)
-         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
+         'exp': CONST_EXP
         }
 
         # 복호화 과정에서 에러가 발생함 수정
         # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
         # jwt생성
+        resp = make_response(render_template("index.html"))
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
+        # 보안을 위해 쿠키를 서버부에서 저장한다
+        # 자동로그인 설정이 되어있을경우 쿠키 바로저장
+        if chk_login_recevie == "true":
+            print(CONST_EXP)
+            resp.set_cookie("save_login", token, expires=CONST_EXP, path='/')
+        else :
+            resp.delete_cookie("save_login", path='/')
+
+        payload = {
+            'id': username,
+            # 로그인 하룻동안 유지 (24)
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)
+        }
+        # jwt생성
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        # 1회용로그인 토큰이들어간 쿠키생성
+        resp.set_cookie("mytoken", token, path='/')
+
         # 생성된 jwt를 반환
-        return jsonify({'result': 'success', 'token': token})
+        return resp
 
     # 찾지 못하면
     else:

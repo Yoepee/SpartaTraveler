@@ -37,7 +37,7 @@
             flex-direction: column;
             justify-content: center;
             color: #F9FFFF;
-        
+
         }
         #subtitle {
             font-size:6vmin;
@@ -92,6 +92,7 @@
         function click_sign_in() {
             let email = $("#input-email").val()
             let password = $("#input-password").val()
+            let chk_login = false
 
             if (email == "") {
                 $("#help-email-login").text("이메일을 입력해주세요.")
@@ -109,17 +110,25 @@
                 $("#help-password-login").text("")
             }
 
-            $.ajax({
+            //수정부분 **
+            //자동로그인체크박스가 설정되어 있다면
+            if ($("input:checkbox[name='save_login']:checked").val()) {
+                chk_login = true
+            }
+
+             $.ajax({
                 type: "POST",
                 url: "/sign_in",
                 data: {
                     email_give: email,
-                    password_give: password
+                    password_give: password,
+                    chk_login_give : chk_login
                 },
                 success: function (response) {
-                    if (response['result'] == 'success') {
-
-
+                    if (response['result'] == 'fail') {
+                        alert(response['msg'])
+                    }
+                    else {
                         if ($("input:checkbox[name='save']:checked").val()) {
                             // $.cookie('쿠키이름', 저장될 값, { expires: 저장기간, path: 쿠키가사용될경료(/일시 사이트 모든페이지), domain: 쿠키가 적용되는 도메인(기본은 생성된 도메인) secure: true사용시 https프로토콜에서만 사용가능 });
                             $.cookie('save_email', email, { expires: 365, path: '/login'});
@@ -129,26 +138,13 @@
                             //체크박스가 해제되어있으므로 쿠키를 삭제한다.
                             $.removeCookie('save_email', {path: '/login'});
                         }
-                        //자동로그인체크박스가 설정되어 있다면
-                        if ($("input:checkbox[name='save_login']:checked").val()) {
-                            //jwt를 쿠키에 넣는다, path경로를 설정하면 설정한 경로 하위경로에만 쿠키가 전달됨
-                            $.cookie('mytoken', response['token'], {path: '/'});
-                            //365일동안 유효한 자동로그인 쿠키또한 발급
-                            $.cookie('save_login', response['token'], { expires: 365, path: '/'});
-                        }
-                        else {
-                            //자동로그인체크박스가 해제되었다면 자동로그인 쿠키 삭제
-                            $.removeCookie('save_login', {path: '/'});
-                            $.cookie('mytoken', response['token'], {path: '/'});
-                        }
-
                         // 화면이동구문 replace사용시 새로운창으로 만드므로 뒤로가기가 불가능하다. 로그인화면으로 돌아갈 필요가 없으므로 사용
                         window.location.replace("/")
-                    } else {
-                        alert(response['msg'])
                     }
                 }
             });
+            //수정부분 **
+
         }
     </script>
 
