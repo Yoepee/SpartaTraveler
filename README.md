@@ -80,7 +80,7 @@
 ***
 ### 3. 알고리즘
 
-사진을 클릭하면 자세한 구조를 확인하실 수 있습니다.
+사진을 클릭하면 연결 구조를 확인하실 수 있습니다.
 
 
 ![](https://velog.velcdn.com/images/lries7897/post/f4b572cc-cb7a-4d5a-b6cc-67c452f694cf/image.png)
