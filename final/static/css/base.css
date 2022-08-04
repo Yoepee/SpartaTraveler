@@ -5,8 +5,8 @@
 }
 
 body {
-    height: 100vh;
-    background-image: url('https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/deQA/image/MUA5VDq-wd9_L7NBmrXC5aAyCd4.jpg');
+    height: 200vh;
+    background-image: url('https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/deQA/image/MUA5VDq-wd9_L7NBmrXC5aAyCd4.jpg' );
     background-size: cover;
 }
 
@@ -31,11 +31,11 @@ body {
 }
 
 #star label:hover {
-    text-shadow: 0 0 0 #a00; /* 마우스 호버 */
+    text-shadow: 0 0 0 goldenrod; /* 마우스 호버 */
 }
 
 #star label:hover ~ label {
-    text-shadow: 0 0 0 #a00; /* 마우스 호버 뒤에오는 이모지들 */
+    text-shadow: 0 0 0 goldenrod; /* 마우스 호버 뒤에오는 이모지들 */
 }
 
 #star fieldset {
@@ -49,7 +49,7 @@ body {
 }
 
 #star input[type=radio]:checked ~ label {
-    text-shadow: 0 0 0 #a00; /* 마우스 클릭 체크 */
+    text-shadow: 0 0 0 goldenrod; /* 마우스 클릭 체크 */
 }
 
 #map {
@@ -87,6 +87,8 @@ body {
 .posting-box {
     width: 500px;
     margin-top: 20px;
+    color: #46649B;
+    height: 500px;
 }
 
 .wrap {
@@ -125,4 +127,9 @@ body {
 
 #marker_ico {
     margin-left: 10px
+}
+
+#post_box {
+    margin: auto;
+    display: flex;
 }
