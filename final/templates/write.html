@@ -3,90 +3,117 @@
 {% block detail %}
 {% endblock %}
 {% block write %}
-    <div class="notification is-primary">
-        <div class="posting-box">
-            <h2>글 작성하기</h2>
-            <div class="form-group">
-                <input type="text" class="form-control" id="inputtitle" placeholder="제목">
-            </div>
+    <div>
+        <div class="card"  id = post_box>
+            <header class="card-header">
+                <p class="card-header-title">
+                    글 작성하기
+                </p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <div class="posting-box" style="margin: auto" >
+                        {#            <h2 style="text-align: center; margin-bottom: 40px; font-size: 20px">글 작성하기</h2>#}
+                        <div class="form-group">
+                            <div>글 제목</div>
+                            <input style="margin-top: 10px" type="text" class="form-control" id="inputtitle" placeholder="제목">
+                        </div>
 
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="file">
-                <label class="custom-file-label" for="file">사진 선택하기</label>
-            </div>
+                        <div class="custom-file" style="margin-top: 30px">
+                            <div>
+                                <div><label class="custom-file-label" for="file">사진 선택하기</label></div>
+                                <input name="post-box-10" style="margin-top: 10px"type="file" class="custom-file-input" id="file">
+                            </div>
 
-            <!--  주소 검색 창  -->
-            <div class="field has-addons">
-                <div class="control">
-                    <input class="input" type="text" id="address" placeholder="장소를 입력하세요">
-                </div>
-                <div class="control">
-                    <button type="submit" class="button is-info" id="addressbutton">주소 검색</button>
-                </div>
-            </div>
 
-            <!--  구글지도 만들기  -->
-            <div id="googleMap" style="width: 50%;height: 300px;"></div>
-            <script>
-                var cityHall;
+                        </div>
 
-                function myMap() {
-                    var marker_length = 0;
-                    var marker;
-                    var mapOptions = {
-                        center: new google.maps.LatLng(37.566554, 126.978546),
-                        zoom: 5
-                    };
-                    var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+                        <!--  주소 검색 창  -->
+                        <div id="set-addr">
+                            <div name="post-box-font">주소를 입력해 주세요</div>
+                            <div class="field has-addons" style="margin-top: 10px" name="post-box-10">
+                                <div class="control">
+                                    <input  class="input" type="text" id="address" placeholder="장소를 입력하세요">
+                                </div>
+                                <div class="control">
+                                    <button  type="submit" class="button is-info" id="addressbutton">주소 검색</button>
+                                </div>
+                            </div>
+                        </div>
 
-                    var geocoder = new google.maps.Geocoder();
+                        <!--  구글지도 만들기  -->
+                        <div id="googleMap" style="width: 50%;height: 300px;"></div>
+                        <script>
+                            var cityHall;
 
-                    document.getElementById('addressbutton').addEventListener('click', function () {
-                        geocodeAddress(geocoder, map);
-                    });
+                            function myMap() {
+                                var marker_length = 0;
+                                var marker;
+                                var mapOptions = {
+                                    center: new google.maps.LatLng(37.566554, 126.978546),
+                                    zoom: 5
+                                };
+                                var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
 
-                    function geocodeAddress(geocoder, resultMap) {
-                        var address = document.getElementById('address').value;
+                                var geocoder = new google.maps.Geocoder();
 
-                        // 마커 지우기
-                        if (marker_length > 0) {
-                            marker.setMap(null);
-                            marker_length == 0;
-                        }
-                        geocoder.geocode({'address': address}, function (result, status) {
-                            if (status == 'OK') {
-                                resultMap.setCenter(result[0].geometry.location);
-                                resultMap.setZoom(5);
-                                cityHall = result[0].geometry.location
-                                marker = new google.maps.Marker({map: resultMap, position: cityHall});
-                                marker_length = 1
-                            } else {
-                                alert('주소가 정확하지 않습니다.' + status);
+                                document.getElementById('addressbutton').addEventListener('click', function () {
+                                    geocodeAddress(geocoder, map);
+                                });
+
+                                function geocodeAddress(geocoder, resultMap) {
+                                    var address = document.getElementById('address').value;
+
+                                    // 마커 지우기
+                                    if (marker_length > 0) {
+                                        marker.setMap(null);
+                                        marker_length == 0;
+                                    }
+                                    geocoder.geocode({'address': address}, function (result, status) {
+                                        if (status == 'OK') {
+                                            resultMap.setCenter(result[0].geometry.location);
+                                            resultMap.setZoom(5);
+                                            cityHall = result[0].geometry.location
+                                            marker = new google.maps.Marker({map: resultMap, position: cityHall});
+                                            marker_length = 1
+                                        } else {
+                                            alert('주소가 정확하지 않습니다.' + status);
+                                        }
+                                    });
+                                }
                             }
-                        });
-                    }
-                }
-            </script>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA6mIa4FCbp0S8pua310loupTFqkbGF2I&callback=myMap"></script>
+                        </script>
+                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA6mIa4FCbp0S8pua310loupTFqkbGF2I&callback=myMap"></script>
 
-            <!--  별점 만들기  -->
-            <div id="star">
-                <fieldset>
-                    <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
-                    <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
-                    <input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
-                    <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
-                    <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
-                </fieldset>
+
+                        <div style="margin-top: 30px">내용을 작성해 주세요</div>
+                        <div class="form-group">
+                            <textarea name="post-box-10" style="margin-top: 10px" class="form-control" id="content" rows="8" placeholder="내용 입력"></textarea>
+                        </div>
+
+                        <!--  별점 만들기  -->
+                        <div id="star" style="text-align: center; margin-top: 20px">
+
+                            <fieldset>
+                                <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
+                                <input type="radio" name="rating" value="4" id="rate2"><label for="rate2">⭐</label>
+                                <input type="radio" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
+                                <input type="radio" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
+                                <input type="radio" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
+                            </fieldset>
+                            <div style="margin: 10px;" name="post-box-10">장소를 평가해주세요</div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group">
-                <textarea class="form-control" id="content" rows="10" placeholder="내용 입력"></textarea>
-            </div>
-
-            <button onclick="posting()" type="button" class="btn btn-primary">업로드</button>
-            <button onclick="window.location.href='/'" type="button" class="btn btn-primary">취소</button>
+            <footer class="card-footer" style="margin-top: 200px">
+                <a href="" onclick="posting(); return false" class="card-footer-item">저장</a>
+                <a href="/" class="card-footer-item">취소</a>
+            </footer>
         </div>
+
+
     </div>
 
 {% endblock %}
