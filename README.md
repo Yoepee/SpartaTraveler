@@ -6,7 +6,7 @@
 
 프로젝트 데모영상 : 
 
-
+https://www.youtube.com/watch?v=iRkpHzd3kvg
 
  >SpartaTraveler는 자신이 가보고 또 가보고 싶은 여행지, 맛집등의 장소를 리뷰하는 플랫폼입니다.
  당신이 아는 당신만의 여행을 알려주세요.
