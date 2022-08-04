@@ -46,62 +46,15 @@
     <script src="https://kit.fontawesome.com/3e0b64a5cf.js" crossorigin="anonymous"></script>
 
     <!--  내부 CSS 사용 (static/css)   -->
-    {#    <link rel="stylesheet" type="text/css" href="../static/css/base.css"/>#}
-    {#    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">#}
-
-    <style>
-        body {
-
-            height: 100vh;
-            background-image: url('https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/deQA/image/MUA5VDq-wd9_L7NBmrXC5aAyCd4.jpg');
-            background-size: cover;
-        }
-
-        #_title {
-            font-family: 'Gowun Dodum', sans-serif;
-            font-family: 'Gugi', cursive;
-            font-family: 'Hi Melody', cursive;
-            font-family: 'Square Peg', cursive;
-            text-align: center;
-            font-size: 6vmin;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: #F9FFFF;
-
-        }
-
-        #sub_title{
-            font-size: 4vmin;
-            text-align: center;
-            font-family: 'Nanum Pen Script', cursive;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: #1E3269;
-        }
-
-        #user_info {
-            float: right;
-        }
-
-        #logout_btn {
-            margin-left: 10px;
-            color: white;
-        }
-
-        #marker_ico {
-            margin-left: 10px
-        }
-
-    </style>
-
+    <link rel="stylesheet" type="text/css" href="../static/css/base.css"/>
+    
 
     <!--    페이지 타이틀     -->
     <title>Sparta Traveler</title>
 
-
+    {% block post %}
     <script>
+
         $(document).ready(function () {
             bsCustomFileInput.init()
             listing();
@@ -114,17 +67,19 @@
                 data: {},
                 success: function (response) {
                     let posts = response['all_posts']
-                    for (i = 0; i < posts.length; i++) {
-                        title = posts[i]['title']
-                        star = posts[i]['star']
-                        star_image = '⭐'.repeat(star)
-                        address = posts[i]['address']
-                        content = posts[i]['content']
-                        picture = posts[i]['file']
-                        date = posts[i]['date']
+                    for (let i = 0; i < posts.length; i++) {
+                        let title = posts[i]['title']
+                        let star = posts[i]['star']
+                        let star_image = '⭐'.repeat(star)
+                        let address = posts[i]['address']
+                        let content = posts[i]['content']
+                        let picture = posts[i]['file']
+                        let date = posts[i]['date']
+                        let num = posts[i]['num']
 
-                        let tmep_html = `<div class="column is-one-quarter">
-                                            <div class="card">
+                        let tmep_html = `
+                                        <div class="column is-one-quarter">
+                                            <div class="card" value=${num} onclick="card_click(this)">
                                               <div class="card-image">
                                                 <figure class="image is-4by3">
                                                   <img src="../static/img/${picture}" alt="Placeholder image">
@@ -141,7 +96,6 @@
                                                     <p class="title is-4">${title}</p>
                                                     <p class="subtitle is-6">${address}</p>
                                                   </div>
-
                                                 </div>
                                                 <p class="subtitle is-6">${star_image}</p>
                                                 <div class="content">
@@ -149,10 +103,10 @@
                                                   <br><br>
                                                   <time datetime="2016-1-1">${date}</time>
                                                 </div>
-
                                               </div>
                                             </div>
-                                        </div>`
+                                        </div>
+                                        `
                         $('#cards-box').append(tmep_html)
                     }
                 }
@@ -173,7 +127,6 @@
                 alert("별점을 등록해주세요.")
             } else {
 
-
                 form_data.append("file_give", file)
                 form_data.append("title_give", title)
                 form_data.append("star_give", star)
@@ -192,13 +145,80 @@
                             alert(response["msg"])
                             window.location.href = '/'
                         } else {
-
-                            //로그인 실패시 에러메세지 출력.
-
+                            //로그인 실패시 에러메세지 출력
                             alert(response["msg"])
                         }
                     }
                 });
+            }
+        }
+
+        function search() {
+
+            let find_name = $("select[name=find_name]").val() // 검색 종류
+            let search_name = $("#search_bar").val() // 검색 값
+            if (search_name != '') {
+                //form_data에 검색 종류와 검색 값을 저장
+                let form_data = new FormData()
+                form_data.append("find_name_give", find_name)
+                form_data.append("search_name_give", search_name)
+                console.log(form_data)
+
+                $.ajax({
+                    type: "POST",
+                    url: "/search",
+                    data: form_data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        let posts = JSON.parse(response['all_posts'])
+
+                        $("#cards-box").empty();
+                        for (let i = 0; i < posts.length; i++) {
+                            let title = posts[i]['title']
+                            let content = posts[i]['content']
+                            let picture = posts[i]['file']
+                            let date = posts[i]['date']
+                            let star = posts[i]['star']
+                            let star_image = '⭐'.repeat(star)
+                            let address = posts[i]['address']
+                            let num = posts[i]['num']
+
+                            let temp_html = `
+                                        <div class="column is-one-quarter">
+                                            <div class="card" value=${num} onclick="card_click(this)">
+                                              <div class="card-image">
+                                                <figure class="image is-4by3">
+                                                  <img src="../static/img/${picture}" alt="Placeholder image">
+                                                </figure>
+                                              </div>
+                                              <div class="card-content">
+                                                <div class="media" style='margin-bottom:12px;'>
+                                                  <div class="media-left">
+                                                    <figure class="image is-48x48">
+                                                      <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                                                    </figure>
+                                                  </div>
+                                                  <div class="media-content">
+                                                    <p class="title is-4">${title}</p>
+                                                    <p class="subtitle is-6">${address}</p>
+                                                  </div>
+                                                </div>
+                                                <p class="subtitle is-6">${star_image}</p>
+                                                <div class="content">
+                                                  ${content}
+                                                  <br><br>
+                                                  <time datetime="2016-1-1">${date}</time>
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                        `
+                            $('#cards-box').append(tmep_html2)
+                        }
+                    }
+                })
             }
         }
 
@@ -208,7 +228,14 @@
             alert('로그아웃!')
             window.location.href = '/login'
         }
+
+        function card_click(obj) {
+      let url = "/detail?num_give="+$(obj).attr("value")
+      window.location.href = url
+
+    }
     </script>
+    {% endblock %}
 </head>
 <body>
 <!--  헤더 부분 -->
@@ -217,7 +244,7 @@
 <section class="hero is-link">
     <div class="hero-body" onclick="window.location.href = '/'">
         <div class="container has-text-centered">
-            <p class="title" id = _title>
+            <p class="title" id=_title>
                 SpartaTraveler
             </p>
             <p class="subtitle" id="sub_title">
@@ -226,20 +253,21 @@
         </div>
         <div id="user_info">
             <span><b>{{ name }}</b>님 반갑습니다!</span>
-            <button id="logout_btn" onclick="logout_user()" type="submit" class="btn btn-outline-light"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+            <button id="logout_btn" onclick="logout_user()" type="submit" class="btn btn-outline-light"><i
+                    class="fa-solid fa-arrow-right-from-bracket"></i></button>
         </div>
     </div>
 </section>
-
+{% block detail %}
 <div class="box cta">
     <div class="has-text-centered">
         <b>👇 나만 알고있던 힐링스팟들을 소개합니다. 카드를 클릭해보세요! 👇</b>
     </div>
-
+{% endblock %}
     {% block write %}
-        <section class="section">
-            <div class="field has-addons">
-                <p class="control">
+    <section class="section">
+        <div class="field has-addons">
+            <p class="control">
         <span class="select">
           <select name="find_name">
             <option value="title">제목</option>
@@ -247,38 +275,29 @@
             <option value="address">장소</option>
           </select>
         </span>
-                </p>
-                <p class="control is-expanded">
-                    <input class="input" type="text" id="search_bar" placeholder="검색어를 입력해주세요">
-                </p>
-                <p class="control">
-                    <button class="button" onclick="search()">검색</button>
-                </p>
-            </div>
-        <button style="float: right" onclick="window.location.href = '/write'" type="submit" class="button">글쓰기<i id="marker_ico" class="fa-solid fa-marker"></i></button>
-        </section>
-
-
+            </p>
+            <p class="control is-expanded">
+                <input class="input" type="text" id="search_bar" placeholder="검색어를 입력해주세요">
+            </p>
+            <p class="control">
+                <button class="button" onclick="search()">검색</button>
+            </p>
         </div>
+        <button style="float: right" onclick="window.location.href = '/write'" type="submit" class="button">글쓰기<i
+                id="marker_ico" class="fa-solid fa-marker"></i></button>
+    </section>
 
 
+</div>
 
 
+<!--  게시글 카드가 들어가는 공간 -->
+<section class="section" style="background-color: white">
+    <div class='columns is-multiline' id="cards-box">
 
+    </div>
 
-
-
-
-        <!--  게시글 카드가 들어가는 공간 -->
-        <section class="section" style="background-color: white">
-            <div class='columns is-multiline' id="cards-box">
-
-            </div>
-
-        </section>
-
-    {% endblock %}
-
-
+</section>
+{% endblock %}
 </body>
 </html>

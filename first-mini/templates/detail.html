@@ -1,37 +1,145 @@
 {% extends 'index.html' %}
-{% block write %}
-<div class="wrapper" style="background-color: white">>
-        <div style="display: flex;">
-            <div class="image-show">
-                <img class="postImage" src="{{ cafe_img }}">
-            </div>
-            <div class="writingInfo">
-                <h1 id="writer-show" class="title-address">작성자 ID : {{ writer_id }}</h1>
-                <h1 id="name-show" class="title-address">카페 이름 : {{ cafe_name }}</h1>
-                <h1 class="title-address">카페 주소 : {{ cafe_address }}</h1>
-            </div>
-        </div>
-        <div class="cafe-text">{{ cafe_coment }}</div>
-        <div id="userment-form">
-            <div id="userment-count">댓글 <span id="count"> 0 </span></div>
-            <input id="userment-input" placeholder="댓글을 입력해 주세요.">
-            <button id="userment-submit" onclick="pressBtn()">등 록</button>
-        </div>
-        <div id="userment-list" style="margin-top: 10px;">
-            {% for onement in user_mentlist %}
-                <div class="eachComment">
-                    <div class="name">
-                        {{ onement.user_name }}
-                        {% if current_user == onement.user_name %}
-                            <button class="deleteComment" type="button" onclick="deleteComments(this)">삭제</button>
-                        {% endif %}
-                    </div>
-                    <span class="inputValue">{{ onement.ment }}</span>
-                    <div class="time">{{ onement.date }}</div>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+{% block post %}
+<script>
+    $(document).ready(function () {
 
-    <script src="{{ url_for('static', filename='js/layout_postview.js') }}"></script>
+        bsCustomFileInput.init()
+        show()
+    })
+
+    function show() {
+        let post_num = `{{value}}` // 검색 종류
+        console.log(`{{value}}`, post_num)
+
+
+        $.ajax({
+            type: "POST",
+            url: "/showpost",
+            data: { 'num_give': post_num },
+            success: function (response) {
+                let posts = response['posts']
+
+                document.getElementById("title").innerHTML = posts[0]['title']
+                document.getElementById("content").innerHTML = content = posts[0]['content']
+                document.getElementById("file").src = "../static/img/" + posts[0]['file']
+
+                document.getElementById("address").innerHTML = posts[0]['address']
+                //document.getElementById("time").innerHTML = posts[0]['time']
+                document.getElementById("scope").innerHTML = '⭐'.repeat(Number(posts[0]['scope']))
+
+            }
+        })
+
+    }
+
+    //지도를 보이거나 숨기게 해주는 함수
+    function mapshow(button) {
+        var googlemap = document.getElementById('googleMap');
+        console.log(googlemap.style.display);
+        if (googlemap.style.display == 'block') {
+            googlemap.style.display = 'none';
+            $(button).text('지도 보기');
+        } else {
+            googlemap.style.display = 'block';
+            $(button).text('지도 숨기기');
+        }
+    }
+
+</script>
+{% endblock %}
+{% block detail %}
+{% endblock %}
+{% block write %}
+<section class="section">
+		<div class="container is-max-desktop">
+			<section class="section is-small">
+
+				<!--  제목과 여행장소  -->
+				<div class="box">
+					<div class="box">
+						<p class="title is-1" id="title"></p>
+						<p class="subtitle is-3" id="scope"></p>
+					</div>
+
+					<!--  사진  -->
+					<section class="section is-small" style="padding: 12px;">
+						<figure class="image is-3by2">
+							<img id="file" src="" style="border-radius: 3%;">
+						</figure>
+					</section>
+					<hr style="height:3px; background-color: black;" style="margin: 6px;">
+
+					<!--  여행 장소와 닉네임  -->
+					<div class="card-content" style="padding: 12px">
+						<div class="media">
+							<div class="media-left">
+								<p class="title is-4" id="address"></p>
+								<p class="subtitle is-6">@name</p>
+							</div>
+							<!--  지도 보기 버튼  -->
+							<div class="buttons">
+								<button class="button is-small" id="googlemapbutton" onclick="mapshow(this)">지도
+									보기</button>
+							</div>
+						</div>
+					</div>
+
+					<!--  구글지도 만들기  -->
+					<div id="googleMap"></div>
+					<script>
+						function myMap() {
+							var marker_length = 0;
+							var marker;
+							var mapOptions = {
+								center: new google.maps.LatLng(37.566554, 126.978546),
+								zoom: 5
+							};
+							var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+
+							var geocoder = new google.maps.Geocoder();
+
+							document.getElementById('googlemapbutton').addEventListener('click', function () {
+								geocodeAddress(geocoder, map);
+							});
+
+							//구글지도에 마커를 찍어주는 함수
+							function geocodeAddress(geocoder, resultMap) {
+								var address = document.getElementById('address').innerHTML;
+
+								// 마커 지우기
+								if (marker_length > 0) {
+									marker.setMap(null);
+									marker_length == 0;
+								}
+								// 입력한 주소의 마커 찍어주기
+								geocoder.geocode({ 'address': address }, function (result, status) {
+									if (status == 'OK') {
+										resultMap.setCenter(result[0].geometry.location);
+										resultMap.setZoom(5);
+										cityHall = result[0].geometry.location
+										marker = new google.maps.Marker({ map: resultMap, position: cityHall });
+										marker_length = 1
+									}
+									else {
+										alert('주소가 정확하지 않습니다.' + status);
+									}
+								});
+							}
+						}
+
+
+					</script>
+					<!--  구글지도  api 연결 -->
+					<script
+						src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA6mIa4FCbp0S8pua310loupTFqkbGF2I&callback=myMap"></script>
+
+					<!--  내용 -->
+					<div class="content is-medium">
+						<p id="content"></p>
+					</div>
+				</div>
+
+			</section>
+		</div>
+	</section>
 {% endblock %}

@@ -56,19 +56,28 @@ body {
     height: 100%;
 }
 
-#title {
+#_title {
     font-family: 'Gowun Dodum', sans-serif;
     font-family: 'Gugi', cursive;
     font-family: 'Hi Melody', cursive;
     font-family: 'Square Peg', cursive;
     text-align: center;
-    font-size: 150px;
+    font-size: 6vmin;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #F9FFFF;
+
 }
 
-#subtitle {
-    font-size: 50px;
+#sub_title {
+    font-size: 4vmin;
     text-align: center;
     font-family: 'Nanum Pen Script', cursive;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #1E3269;
 }
 
 * {
@@ -97,4 +106,23 @@ body {
     color: gray;
     font-size: 14px;
     margin-bottom: 0;
+}
+
+#googleMap {
+    display: none;
+    height: 300px;
+    width: 50%;
+}
+
+#user_info {
+    float: right;
+}
+
+#logout_btn {
+    margin-left: 10px;
+    color: white;
+}
+
+#marker_ico {
+    margin-left: 10px
 }
