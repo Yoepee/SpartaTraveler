@@ -2,204 +2,209 @@
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-  <!-- bulma CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+	<!-- bulma CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
 
-  <title>게시글 테스트</title>
+	<title>게시글 테스트</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
 
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 
-  <style>
-    /* --- 폰트 --- */
-    * {
-      font-family: 'Jua', sans-serif;
-    }
+	<style>
+		/* --- 폰트 --- */
+		* {
+			font-family: 'Jua', sans-serif;
+		}
 
-    /* ---구글 지도 css--- */
-    #googleMap {
-      display: none;
-      height: 300px;
-      width: 50%;
-    }
-  </style>
+		/* ---구글 지도 css--- */
+		#googleMap {
+			display: none;
+			height: 300px;
+			width: 50%;
+		}
+	</style>
 
-  <script>
-    $(document).ready(function () {
-      bsCustomFileInput.init()
-      show()
-    })
+	<script>
 
-    function show() {
-      let file_name = "{{value}}" // 검색 종류
-      console.log("{{value}}",file_name)
+		$(document).ready(function () {
 
-      //form_data에 id값 을 저장
-      let form_data = new FormData()
-      form_data.append("file_name_give", file_name)
-      console.log(form_data)
+			bsCustomFileInput.init()
+			show()
+		})
 
-      $.ajax({
-        type: "POST",
-        url: "/showpost",
-        data: form_data,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (response) {
-          let diaries = JSON.parse(response['all_diary'])
-          console.log(diaries)
-          document.getElementById("title").innerHTML = diaries[0]['title']
-          document.getElementById("content").innerHTML = content = diaries[0]['content']
-          document.getElementById("file").src = "../static/" + diaries[0]['file']
+		function show() {
+			let file_name = "{{value}}" // 검색 종류
+			console.log("{{value}}", file_name)
 
-          document.getElementById("address").innerHTML = diaries[0]['address']
-          //document.getElementById("time").innerHTML = diaries[0]['time']
-          document.getElementById("scope").innerHTML = '⭐'.repeat(Number(diaries[0]['scope']))
+			//form_data에 id값 을 저장
+			let form_data = new FormData()
+			form_data.append("file_name_give", file_name)
+			console.log(form_data)
 
-        }
-      })
+			$.ajax({
+				type: "POST",
+				url: "/showpost",
+				data: form_data,
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function (response) {
+					let diaries = JSON.parse(response['all_diary'])
 
-    }
+					document.getElementById("title").innerHTML = diaries[0]['title']
+					document.getElementById("content").innerHTML = content = diaries[0]['content']
+					document.getElementById("file").src = "../static/" + diaries[0]['file']
 
-    //지도를 보이거나 숨기게 해주는 함수
-    function mapshow(button) {
-      var googlemap = document.getElementById('googleMap');
-      console.log(googlemap.style.display);
-      if (googlemap.style.display == 'block') {
-        googlemap.style.display = 'none';
-        $(button).text('지도 보기');
-      }
-      else {
-        googlemap.style.display = 'block';
-        $(button).text('지도 숨기기');
-      }
-    }
+					document.getElementById("address").innerHTML = diaries[0]['address']
+					//document.getElementById("time").innerHTML = diaries[0]['time']
+					document.getElementById("scope").innerHTML = '⭐'.repeat(Number(diaries[0]['scope']))
 
-  </script>
+				}
+			})
+
+		}
+
+		//지도를 보이거나 숨기게 해주는 함수
+		function mapshow(button) {
+			var googlemap = document.getElementById('googleMap');
+			console.log(googlemap.style.display);
+			if (googlemap.style.display == 'block') {
+				googlemap.style.display = 'none';
+				$(button).text('지도 보기');
+			}
+			else {
+				googlemap.style.display = 'block';
+				$(button).text('지도 숨기기');
+			}
+		}
+
+
+	</script>
 </head>
 
 <body>
-  <!--  헤더 부분 -->
-  <section class="hero is-info">
-    <div class="hero-body">
-      <p class="title">
-        Sparta Travler
-      </p>
-    </div>
-  </section>
+	<!--  헤더 부분 -->
+	<section class="hero is-info">
+		<div class="hero-body">
+			<p class="title">
+				Sparta Travler
+			</p>
+		</div>
+	</section>
 
-  <!--  게시글  -->
-  <section class="section">
-    <div class="container is-max-desktop">
-      <section class="section is-small">
+	<!--  게시글  -->
+	<section class="section">
+		<div class="container is-max-desktop">
+			<section class="section is-small">
 
-        <!--  제목과 여행장소  -->
-        <div class="box">
-          <div class="box">
-            <p class="title is-1" id="title"></p>
-            <p class="subtitle is-3" id="scope"></p>
-          </div>
+				<!--  제목과 여행장소  -->
+				<div class="box">
+					<div class="box">
+						<p class="title is-1" id="title"></p>
+						<p class="subtitle is-3" id="scope"></p>
+					</div>
 
-          <!--  사진  -->
-          <section class="section is-small" style="padding: 12px;">
-            <figure class="image is-3by2">
-              <img id="file" src="" style="border-radius: 3%;">
-            </figure>
-          </section>
-          <hr style="height:3px; background-color: black;" style="margin: 6px;">
+					<!--  사진  -->
+					<section class="section is-small" style="padding: 12px;">
+						<figure class="image is-3by2">
+							<img id="file" src="" style="border-radius: 3%;">
+						</figure>
+					</section>
+					<hr style="height:3px; background-color: black;" style="margin: 6px;">
 
-          <!--  여행 장소와 닉네임  -->
-          <div class="card-content" style="padding: 12px">
-            <div class="media">
-              <div class="media-left">
-                <p class="title is-4" id="address"></p>
-                <p class="subtitle is-6">@name</p>
-              </div>
-              <!--  지도 보기 버튼  -->
-              <div class="buttons">
-                <button class="button is-small" id="googlemapbutton" onclick="mapshow(this)">지도 보기</button>
-              </div>
-            </div>
-          </div>
+					<!--  여행 장소와 닉네임  -->
+					<div class="card-content" style="padding: 12px">
+						<div class="media">
+							<div class="media-left">
+								<p class="title is-4" id="address"></p>
+								<p class="subtitle is-6">@name</p>
+							</div>
+							<!--  지도 보기 버튼  -->
+							<div class="buttons">
+								<button class="button is-small" id="googlemapbutton" onclick="mapshow(this)">지도
+									보기</button>
+							</div>
+						</div>
+					</div>
 
-          <!--  구글지도 만들기  -->
-          <div id="googleMap"></div>
-          <script>
-            var cityHall;
-            function myMap() {
-              var marker_length = 0;
-              var marker;
-              var mapOptions = {
-                center: new google.maps.LatLng(37.566554, 126.978546),
-                zoom: 5
-              };
-              var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+					<!--  구글지도 만들기  -->
+					<div id="googleMap"></div>
+					<script>
+						function myMap() {
+							var marker_length = 0;
+							var marker;
+							var mapOptions = {
+								center: new google.maps.LatLng(37.566554, 126.978546),
+								zoom: 5
+							};
+							var map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
 
-              var geocoder = new google.maps.Geocoder();
+							var geocoder = new google.maps.Geocoder();
 
-              // document.getElementById('addressbutton').addEventListener('click', function () {
-              //   geocodeAddress(geocoder, map);
-              // });
+							document.getElementById('googlemapbutton').addEventListener('click', function () {
+								geocodeAddress(geocoder, map);
+							});
 
-              // //구글지도에 마커를 찍어주는 함수
-              // function geocodeAddress(geocoder, resultMap) {
-              //   var address = document.getElementById('address').value;
+							//구글지도에 마커를 찍어주는 함수
+							function geocodeAddress(geocoder, resultMap) {
+								var address = document.getElementById('address').innerHTML;
 
-              //   // 마커 지우기
-              //   if (marker_length > 0) {
-              //     marker.setMap(null);
-              //     marker_length == 0;
-              //   }
-              //   // 입력한 주소의 마커 찍어주기
-              //   geocoder.geocode({ 'address': address }, function (result, status) {
-              //     if (status == 'OK') {
-              //       resultMap.setCenter(result[0].geometry.location);
-              //       resultMap.setZoom(5);
-              //       cityHall = result[0].geometry.location
-              //       marker = new google.maps.Marker({ map: resultMap, position: cityHall });
-              //       marker_length = 1
-              //     }
-              //     else {
-              //       alert('주소가 정확하지 않습니다.' + status);
-              //     }
-              //   });
-              // }
-            }
-          </script>
-          <!--  구글지도  api 연결 -->
-          <script
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA6mIa4FCbp0S8pua310loupTFqkbGF2I&callback=myMap"></script>
+								// 마커 지우기
+								if (marker_length > 0) {
+									marker.setMap(null);
+									marker_length == 0;
+								}
+								// 입력한 주소의 마커 찍어주기
+								geocoder.geocode({ 'address': address }, function (result, status) {
+									if (status == 'OK') {
+										resultMap.setCenter(result[0].geometry.location);
+										resultMap.setZoom(5);
+										cityHall = result[0].geometry.location
+										marker = new google.maps.Marker({ map: resultMap, position: cityHall });
+										marker_length = 1
+									}
+									else {
+										alert('주소가 정확하지 않습니다.' + status);
+									}
+								});
+							}
+						}
 
-          <!--  내용 -->
-          <div class="content is-medium">
-            <p id="content"></p>
-          </div>
-        </div>
 
-      </section>
-    </div>
-  </section>
+					</script>
+					<!--  구글지도  api 연결 -->
+					<script
+						src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA6mIa4FCbp0S8pua310loupTFqkbGF2I&callback=myMap"></script>
+
+					<!--  내용 -->
+					<div class="content is-medium">
+						<p id="content"></p>
+					</div>
+				</div>
+
+			</section>
+		</div>
+	</section>
 </body>
 
 </html>
