@@ -91,6 +91,7 @@
 - ![](https://velog.velcdn.com/images/lries7897/post/c12099a3-dd54-4183-8cf9-785901ce4780/image.svg)
 - ![](https://velog.velcdn.com/images/lries7897/post/54164564-28a8-4123-b909-a71fc44263b7/image.svg)
 - ![](https://velog.velcdn.com/images/lries7897/post/14492954-59c1-4c59-8276-3292f3c2c081/image.svg)
+<img src="https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=Amazon AWS&logoColor=white">
 
 
 *** 
