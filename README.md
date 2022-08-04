@@ -39,7 +39,7 @@
     <summary>
         <b>구글API를 이용한 지도와 마커 사용방법</b>
     </summary>
-<br>구글지도 api를 써본적이 없지만 [여기]https://developers.google.com/maps/gmp-get-started?hl=ko#api-key와 [여기](https://floor5th.tistory.com/88)를 참고하여 구현하였다
+<br>구글지도 api를 써본적이 없지만 [여기] https://developers.google.com/maps/gmp-get-started?hl=ko#api-key 와 [여기] (https://floor5th.tistory.com/88)를 참고하여 구현하였다
 
 ```javascript
     function showPost(data) {
