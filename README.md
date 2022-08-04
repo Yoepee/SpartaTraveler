@@ -82,15 +82,15 @@
 ***
 
 ### 3. 적용 기술
-- ![](https://velog.velcdn.com/images/lries7897/post/c5347b01-bd36-4660-9fb4-9be2c079e71d/image.svg)
-- ![](https://velog.velcdn.com/images/lries7897/post/4d823368-8bbb-4b3a-a375-44c926ae38a4/image.svg)
-- ![](https://velog.velcdn.com/images/lries7897/post/c9e7711d-7a2c-4016-ba4c-c208c7f66c65/image.svg)
-- ![](https://velog.velcdn.com/images/lries7897/post/5cfe62be-d84a-43f3-88bc-1dd0cc38024c/image.svg)
-- ![](https://velog.velcdn.com/images/lries7897/post/c6619738-192d-4d2d-8860-b33d59dccc51/image.svg)
-- ![](https://velog.velcdn.com/images/lries7897/post/75d83ebb-f013-459b-9c4f-368a871e52ac/image.svg)
-- ![](https://velog.velcdn.com/images/lries7897/post/c12099a3-dd54-4183-8cf9-785901ce4780/image.svg)
-- ![](https://velog.velcdn.com/images/lries7897/post/54164564-28a8-4123-b909-a71fc44263b7/image.svg)
-- ![](https://velog.velcdn.com/images/lries7897/post/14492954-59c1-4c59-8276-3292f3c2c081/image.svg)
+- <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white">
+- <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
+- <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white">
+- <img src="https://img.shields.io/badge/Bulma-00D1B2?style=for-the-badge&logo=Bulma&logoColor=white">
+- <img src="https://img.shields.io/badge/Font Awesome-528DD7?style=for-the-badge&logo=font awesome&logoColor=white">
+- <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
+- <img src="https://img.shields.io/badge/JQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white">
+- <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=Flask&logoColor=white">
+- <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">
 <img src="https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=Amazon AWS&logoColor=white">
 <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white">
 <img src="https://img.shields.io/badge/Jinja-B41717?style=for-the-badge&logo=jinja&logoColor=white">
