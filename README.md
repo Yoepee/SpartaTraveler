@@ -92,6 +92,8 @@
 - ![](https://velog.velcdn.com/images/lries7897/post/54164564-28a8-4123-b909-a71fc44263b7/image.svg)
 - ![](https://velog.velcdn.com/images/lries7897/post/14492954-59c1-4c59-8276-3292f3c2c081/image.svg)
 <img src="https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=Amazon AWS&logoColor=white">
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white">
+<img src="https://img.shields.io/badge/Jinja-B41717?style=for-the-badge&logo=jinja&logoColor=white">
 
 
 *** 
