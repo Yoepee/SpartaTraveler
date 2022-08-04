@@ -54,3 +54,12 @@
 ### 5. GitHub / S.A 주소 
 + github : https://github.com/Yoepee/til
 + S.A : https://velog.io/@lries7897/8%EC%A1%B0-%EC%9D%B4%EB%85%B8%EB%B2%A0%EC%9D%B4%EC%85%98-%EA%B0%95%EC%9B%90-1%EC%A3%BC%EC%B0%A8Mini-project-S.A
+
+***
+### 6. 팀원 회고
++ 이승환
++ 이선홍
++ 김동엽
++ 이수형
++ 이예솔
++ 
