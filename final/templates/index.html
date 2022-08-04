@@ -152,6 +152,19 @@
                 });
             }
         }
+        //지도를 보이거나 숨기게 해주는 함수
+        function mapshow(button) {
+            var googlemap = document.getElementById('googleMap');
+            console.log(googlemap.style.display);
+            if (googlemap.style.display == 'block') {
+                googlemap.style.display = 'none';
+                $(button).text('지도 보기');
+            }
+            else {
+                googlemap.style.display = 'block';
+                $(button).text('지도 숨기기');
+            }
+        }
 
         function search() {
 
