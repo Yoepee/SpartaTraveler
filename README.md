@@ -4,9 +4,7 @@
 
 ![](https://velog.velcdn.com/images/lries7897/post/eaecfbe5-d346-4210-9ba4-a0f1d7b8e57a/image.png)
 
-프로젝트 데모영상 : 
-
-https://www.youtube.com/watch?v=iRkpHzd3kvg
+프로젝트 데모영상 : https://www.youtube.com/watch?v=iRkpHzd3kvg
 
  >SpartaTraveler는 자신이 가보고 또 가보고 싶은 여행지, 맛집등의 장소를 리뷰하는 플랫폼입니다.
  당신이 아는 당신만의 여행을 알려주세요.
@@ -81,6 +79,8 @@ https://www.youtube.com/watch?v=iRkpHzd3kvg
     
 ***
 ### 3. 알고리즘
+
+사진을 클릭하면 자세한 구조를 확인하실 수 있습니다.
 ![](https://velog.velcdn.com/images/lries7897/post/f4b572cc-cb7a-4d5a-b6cc-67c452f694cf/image.png)
     
 ***
