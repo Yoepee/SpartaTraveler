@@ -113,48 +113,7 @@
             })
         }
 
-        function posting() {
-            let title = $('#inputtitle').val()
-            let content = $("#content").val()
-            let star = $(':radio[name="rating"]:checked').val()
-            let address = $('#address').val()
-            let file = $('#file')[0].files[0]
-            let form_data = new FormData()
-
-            if (file == null) {
-                alert("사진을 등록해주세요.")
-            } else if ($(':radio[name="rating"]:checked').length == 0) {
-                alert("별점을 등록해주세요.")
-            } else {
-
-                form_data.append("file_give", file)
-                form_data.append("title_give", title)
-                form_data.append("star_give", star)
-                form_data.append("address_give", address)
-                form_data.append("content_give", content)
-
-                $.ajax({
-                    type: "POST",
-                    url: "/write2",
-                    data: form_data,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (response) {
-                        if (response["result"] == 'success') {
-                            alert(response["msg"])
-                            window.location.href = '/'
-                        } else {
-                            //로그인 실패시 에러메세지 출력
-                            alert(response["msg"])
-                        }
-                    }
-                });
-            }
-        }
-
         function search() {
-
             let find_name = $("select[name=find_name]").val() // 검색 종류
             let search_name = $("#search_bar").val() // 검색 값
             if (search_name != '') {
@@ -215,7 +174,7 @@
                                             </div>
                                         </div>
                                         `
-                            $('#cards-box').append(tmep_html2)
+                            $('#cards-box').append(tmep_html)
                         }
                     }
                 })
@@ -237,10 +196,10 @@
     </script>
     {% endblock %}
 </head>
+
 <body>
+
 <!--  헤더 부분 -->
-
-
 <section class="hero is-link">
     <div class="hero-body" onclick="window.location.href = '/'">
         <div class="container has-text-centered">
