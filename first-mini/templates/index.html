@@ -141,6 +141,7 @@
                                                     <p class="title is-4">${title}</p>
                                                     <p class="subtitle is-6">${address}</p>
                                                   </div>
+
                                                 </div>
                                                 <p class="subtitle is-6">${star_image}</p>
                                                 <div class="content">
@@ -148,6 +149,7 @@
                                                   <br><br>
                                                   <time datetime="2016-1-1">${date}</time>
                                                 </div>
+
                                               </div>
                                             </div>
                                         </div>`
@@ -171,6 +173,7 @@
                 alert("별점을 등록해주세요.")
             } else {
 
+
                 form_data.append("file_give", file)
                 form_data.append("title_give", title)
                 form_data.append("star_give", star)
@@ -189,7 +192,9 @@
                             alert(response["msg"])
                             window.location.href = '/'
                         } else {
+
                             //로그인 실패시 에러메세지 출력.
+
                             alert(response["msg"])
                         }
                     }
@@ -207,6 +212,7 @@
 </head>
 <body>
 <!--  헤더 부분 -->
+
 
 <section class="hero is-link">
     <div class="hero-body" onclick="window.location.href = '/'">
@@ -272,5 +278,7 @@
         </section>
 
     {% endblock %}
+
+
 </body>
 </html>
