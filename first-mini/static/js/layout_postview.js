@@ -140,4 +140,5 @@ function pressBtn() {
         showComment(currentVal.value);
         mainCommentCount.innerText = parseInt(mainCommentCount.innerText) + 1; // 전체 댓글 개수 + 1 해주기
         currentVal.value = null;
-
+    }
+}

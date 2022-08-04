@@ -30,7 +30,7 @@ num = 0
 # 데이터베이스
 from pymongo import MongoClient
 
-client = MongoClient('mongodb+srv://test:sparta@cluster0.y2pfd99.mongodb.net/?retryWrites=true&w=majority')
+client = MongoClient('mongodb+srv://Now:rla15923@cluster0.otpdv.mongodb.net/Cluster0?retryWrites=true&w=majority')
 db = client.dbsparta
 
 
