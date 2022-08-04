@@ -80,8 +80,12 @@
 
     
 ***
+### 3. 알고리즘
+![](https://velog.velcdn.com/images/lries7897/post/f4b572cc-cb7a-4d5a-b6cc-67c452f694cf/image.png)
+    
+***
 
-### 3. 적용 기술
+### 4. 적용 기술
 <img src="https://img.shields.io/badge/Jinja-B41717?style=for-the-badge&logo=jinja&logoColor=white">
 <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white">
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
@@ -99,7 +103,7 @@
 
 
 *** 
-### 4. 주요 기능
+### 5. 주요 기능
 + jwt를 활용한 사용자 인증
 + jinja2 템플릿 활용
 + 구글 api활용
@@ -109,6 +113,6 @@
 
 
 *** 
-### 5. GitHub / S.A 주소 
+### 6. GitHub / S.A 주소 
 + github : https://github.com/Yoepee/til
 + S.A : https://velog.io/@lries7897/8%EC%A1%B0-%EC%9D%B4%EB%85%B8%EB%B2%A0%EC%9D%B4%EC%85%98-%EA%B0%95%EC%9B%90-1%EC%A3%BC%EC%B0%A8Mini-project-S.A
