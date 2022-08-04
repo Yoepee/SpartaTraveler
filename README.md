@@ -34,8 +34,56 @@
 > - 로그인
 자동로그인을 구현하던 때 쿠키를 클라이언트에서 저장하는 방식의 보안취약점에 대한 문제를 인식하여 서버에서 쿠키를 집어넣어 건네주는 방식으로 해결
 이때 본래 자동로그인쿠키와 아이디저장 쿠키를 동시에 서버에서 저장하려했지만 서버에서의 변수값 참조시 예상과 다른 값이 들어가는 일이 발생하여 아이디 저장 쿠키의 값은 클라이언트에서 저장받는 방식으로 해결.
-- [구글API를 이용한 지도와 마커 사용방법](https://floor5th.tistory.com/88)
-- [Flask 400 bad request: keyerror: 오류](https://jae04099.tistory.com/entry/PythonFlask-400-bad-request-keyerror-%ED%95%B4%EA%B2%B0)
+
+<details>
+    <summary>
+        <b>구글API를 이용한 지도와 마커 사용방법</b>
+    </summary>
+<br>구글지도 api를 써본적이 없지만 [여기]https://developers.google.com/maps/gmp-get-started?hl=ko#api-key와 [여기](https://floor5th.tistory.com/88)를 참고하여 구현하였다
+
+```javascript
+    function showPost(data) {
+        let writer_name = sessionStorage.getItem(data);
+        $.ajax({
+            type: "POST",
+            url: "/api/postdown",
+            data: {
+                writer_name: writer_name,
+                cafe_name: data
+            },
+            success: function (response) {
+                document.write(response); //페이지 쓰기
+                showDBMents(ments);
+            }
+        });
+    }
+```
+
+</details>
+
+<details>
+    <summary>
+        <b>Flask 400 bad request: keyerror: 오류</b>
+    </summary>
+<br>클라이언트로부터 서버가 데이터를 받는 순간 Flask 400 bad request: keyerror:오류가 발생하였지만 코드를 아래와 같이 바꾸니 오류가 해결되었다.
+
+```python
+	##원래의 코드
+	@app.route('/checkrecord/delete', methods=['POST'])
+	def delete_record():
+	    title_receive = request.form['music_title']		##이 줄
+	    return jsonify({'result': 'success'})
+
+	##변경 후 
+	@app.route('/checkrecord/delete', methods=['POST'])
+	def delete_record():
+	    title_receive = request.form.get('music_title', False)	##이 줄
+	    db.music_diary.delete_one({'music_title': title_receive})
+	    return jsonify({'result': 'success'})
+```
+
+</details>
+
     
 ***
 
