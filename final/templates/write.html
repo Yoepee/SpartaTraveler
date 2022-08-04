@@ -4,16 +4,16 @@
 {% endblock %}
 {% block write %}
     <div>
-        <div class="card"  id = post_box>
+        <div class="card">
             <header class="card-header">
                 <p class="card-header-title">
                     글 작성하기
                 </p>
+
             </header>
             <div class="card-content">
-                <div class="content">
-                    <div class="posting-box" style="margin: auto" >
-                        {#            <h2 style="text-align: center; margin-bottom: 40px; font-size: 20px">글 작성하기</h2>#}
+                <div class="content" id="contents" style=" position: relative;">
+                     <div class="posting-box" style="margin: auto" >
                         <div class="form-group">
                             <div>글 제목</div>
                             <input style="margin-top: 10px" type="text" class="form-control" id="inputtitle" placeholder="제목">
@@ -35,11 +35,15 @@
                                 <div class="control">
                                     <input  class="input" type="text" id="address" placeholder="장소를 입력하세요">
                                 </div>
-                                <div class="control">
+                                 <div class="control">
                                     <button  type="submit" class="button is-info" id="addressbutton">주소 검색</button>
+                                </div>
+                                <div class="buttons" style="padding-left:5px">
+                                    <button class="button is-info" id="googlemapbutton" onclick="mapshow(this)">지도 보기</button>
                                 </div>
                             </div>
                         </div>
+
 
                         <!--  구글지도 만들기  -->
                         <div id="googleMap" style="width: 50%;height: 300px;"></div>
@@ -85,14 +89,8 @@
                         </script>
                         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA6mIa4FCbp0S8pua310loupTFqkbGF2I&callback=myMap"></script>
 
-
-                        <div style="margin-top: 30px">내용을 작성해 주세요</div>
-                        <div class="form-group">
-                            <textarea name="post-box-10" style="margin-top: 10px" class="form-control" id="content" rows="8" placeholder="내용 입력"></textarea>
-                        </div>
-
-                        <!--  별점 만들기  -->
-                        <div id="star" style="text-align: center; margin-top: 20px">
+                         <!--  별점 만들기  -->
+                        <div id="star" style="text-align: center; margin-top: 60px">
 
                             <fieldset>
                                 <input type="radio" name="rating" value="5" id="rate1"><label for="rate1">⭐</label>
@@ -104,16 +102,34 @@
                             <div style="margin: 10px;" name="post-box-10">장소를 평가해주세요</div>
                         </div>
 
+                        <div style="margin-top: 30px">내용을 작성해 주세요</div>
+                        <div class="form-group">
+                            <textarea name="post-box-10" style="margin-top: 10px" class="form-control" id="content" rows="5" placeholder="내용 입력"></textarea>
+                        </div>
+
+
                     </div>
+
                 </div>
             </div>
-            <footer class="card-footer" style="margin-top: 200px">
+            <footer class="card-footer" id="cf" style="margin-top: 250px">
                 <a href="" onclick="posting(); return false" class="card-footer-item">저장</a>
                 <a href="/" class="card-footer-item">취소</a>
             </footer>
         </div>
 
 
-    </div>
 
+
+
+    </div>
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
+      <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+      is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+    </p>
+  </div>
+</footer>
 {% endblock %}
