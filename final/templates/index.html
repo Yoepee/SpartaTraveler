@@ -114,7 +114,6 @@
         }
 
         function search() {
-
             let find_name = $("select[name=find_name]").val() // 검색 종류
             let search_name = $("#search_bar").val() // 검색 값
             if (search_name != '') {
@@ -175,7 +174,7 @@
                                             </div>
                                         </div>
                                         `
-                            $('#cards-box').append(tmep_html2)
+                            $('#cards-box').append(tmep_html)
                         }
                     }
                 })
@@ -197,10 +196,10 @@
     </script>
     {% endblock %}
 </head>
+
 <body>
+
 <!--  헤더 부분 -->
-
-
 <section class="hero is-link">
     <div class="hero-body" onclick="window.location.href = '/'">
         <div class="container has-text-centered">
